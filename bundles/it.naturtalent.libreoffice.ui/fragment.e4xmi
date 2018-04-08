@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="ASCII"?>
+<fragment:ModelFragments xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:application="http://www.eclipse.org/ui/2010/UIModel/application" xmlns:fragment="http://www.eclipse.org/ui/2010/UIModel/fragment" xmi:id="_cXT1gDqnEei6Crsyx7Hilg">
+  <fragments xsi:type="fragment:StringModelFragment" xmi:id="_goJjIDqoEei6Crsyx7Hilg" featurename="addons" parentElementId="it.naturtalent.e4.application">
+    <elements xsi:type="application:Addon" xmi:id="_63Wa8DqoEei6Crsyx7Hilg" elementId="it.naturtalent.libreoffice.ui.addon.0" contributionURI="bundleclass://it.naturtalent.libreoffice.ui/it.naturtalent.libreoffice.ui.LibreOfficeAddon"/>
+  </fragments>
+</fragment:ModelFragments>

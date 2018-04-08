@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <feature url="features/it.naturtalent.feature.libreoffice_1.0.0.qualifier.jar" id="it.naturtalent.feature.libreoffice" version="1.0.0.qualifier">
+      <category name="libreoffice"/>
+   </feature>
+   <category-def name="libreoffice" label="Libreoffice"/>
+</site>

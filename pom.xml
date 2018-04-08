@@ -1,0 +1,24 @@
+<project>
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>it.naturtalent.libreoffice</groupId>
+	<artifactId>it.naturtalent.libreoffice.root</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+	<packaging>pom</packaging>
+
+	<parent>
+		<groupId>it.naturtalent.libreoffice</groupId>
+		<artifactId>it.naturtalent.libreoffice.configuration</artifactId>
+		<version>1.0.0-SNAPSHOT</version>
+		<relativePath>./releng/it.naturtalent.libreoffice.configuration</relativePath>
+	</parent>
+
+	<modules>
+		<module>bundles</module>
+		<module>features</module>
+		<module>releng</module>
+	</modules>
+
+</project>
+
+
