@@ -13,7 +13,9 @@
 	</parent>
 
 	<modules>
+		<module>it.naturtalent.libreoffice</module>
 		<module>it.naturtalent.libreoffice.ui</module>
+		<module>it.naturtalent.libreoffice.odf</module>
 	</modules>
 
 </project>

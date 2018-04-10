@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="ASCII"?>
+<fragment:ModelFragments xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:application="http://www.eclipse.org/ui/2010/UIModel/application" xmlns:commands="http://www.eclipse.org/ui/2010/UIModel/application/commands" xmlns:fragment="http://www.eclipse.org/ui/2010/UIModel/fragment" xmlns:menu="http://www.eclipse.org/ui/2010/UIModel/application/ui/menu" xmi:id="_JrqR0F6qEeSW56bf4fNm-w">
+  <fragments xsi:type="fragment:StringModelFragment" xmi:id="_MvvG0F6qEeSW56bf4fNm-w" featurename="commands" parentElementId="it.naturtalent.e4.application">
+    <elements xsi:type="commands:Command" xmi:id="_VynckF6qEeSW56bf4fNm-w" elementId="it.naturtalent.libreoffice.command.unocommands" commandName="unocommands"/>
+    <elements xsi:type="commands:Command" xmi:id="_1f78ADZjEei5-NQ0wJnPEw" elementId="it.naturtalent.libreoffice.command.newdrawdocument" commandName="newDrawDocument"/>
+    <elements xsi:type="commands:Command" xmi:id="_CN0HsDnkEeibAIyWdlef6w" elementId="it.naturtalent.libreoffice.command.newcalcdocument" commandName="newCalcDocument"/>
+  </fragments>
+  <fragments xsi:type="fragment:StringModelFragment" xmi:id="_byc4EF6qEeSW56bf4fNm-w" featurename="handlers" parentElementId="it.naturtalent.e4.application">
+    <elements xsi:type="commands:Handler" xmi:id="_i3LfEF6qEeSW56bf4fNm-w" elementId="it.naturtalent.libreoffice.handler.0" contributionURI="bundleclass://it.naturtalent.libreoffice/it.naturtalent.libreoffice.handlers.TestGenerateTargetPlugins" command="_VynckF6qEeSW56bf4fNm-w"/>
+    <elements xsi:type="commands:Handler" xmi:id="_CP948DZkEei5-NQ0wJnPEw" elementId="it.naturtalent.libreoffice.handler.newDrawHandler" contributionURI="bundleclass://it.naturtalent.libreoffice/it.naturtalent.libreoffice.handlers.NewDrawHandler" command="_1f78ADZjEei5-NQ0wJnPEw"/>
+    <elements xsi:type="commands:Handler" xmi:id="_PhPFkDnkEeibAIyWdlef6w" elementId="it.naturtalent.libreoffice.handler.newCalcHandler" contributionURI="bundleclass://it.naturtalent.libreoffice/it.naturtalent.libreoffice.handlers.NewCalcHandler" command="_CN0HsDnkEeibAIyWdlef6w"/>
+  </fragments>
+  <fragments xsi:type="fragment:StringModelFragment" xmi:id="_3UYjEF6qEeSW56bf4fNm-w" featurename="children" parentElementId="it.naturtalent.e4.application.menu.tools">
+    <elements xsi:type="menu:HandledMenuItem" xmi:id="_-Uo5wF6qEeSW56bf4fNm-w" elementId="it.naturtalent.libreoffice.handledmenuitem.testUno" label="Test UNO" command="_VynckF6qEeSW56bf4fNm-w"/>
+  </fragments>
+  <fragments xsi:type="fragment:StringModelFragment" xmi:id="_ejziADZkEei5-NQ0wJnPEw" featurename="children" parentElementId="it.naturtalent.e4.application.menu.new" positionInList="last">
+    <elements xsi:type="menu:HandledMenuItem" xmi:id="_pArwkDZkEei5-NQ0wJnPEw" elementId="it.naturtalent.libreoffice.handledmenuitem.NewDrawDocument" label="Zeichnung" command="_1f78ADZjEei5-NQ0wJnPEw"/>
+    <elements xsi:type="menu:HandledMenuItem" xmi:id="_vTcS8DnkEeibAIyWdlef6w" elementId="it.naturtalent.libreoffice.handledmenuitem.NewCalcDocument" label="Kalkulation" enabled="false" command="_CN0HsDnkEeibAIyWdlef6w"/>
+  </fragments>
+  <fragments xsi:type="fragment:StringModelFragment" xmi:id="_D8o8sDkCEeiFzN_JkoROhA" featurename="addons" parentElementId="it.naturtalent.e4.application">
+    <elements xsi:type="application:Addon" xmi:id="_KDm68DkCEeiFzN_JkoROhA" elementId="it.naturtalent.libreoffice.addon.libreOffice" contributionURI="bundleclass://it.naturtalent.libreoffice/it.naturtalent.libreoffice.LibreOfficeAddon"/>
+  </fragments>
+</fragment:ModelFragments>

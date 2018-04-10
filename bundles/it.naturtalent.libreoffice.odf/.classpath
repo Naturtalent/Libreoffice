@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
+	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
+	<classpathentry kind="src" path="src/"/>
+	<classpathentry exported="true" kind="lib" path="simple-odf-0.7-incubating.jar"/>
+	<classpathentry exported="true" kind="lib" path="odfdom-java-0.8.9-incubating.jar"/>
+	<classpathentry exported="true" kind="lib" path="utils-0.2-SNAPSHOT.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/commons-codec-1.6.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/httpclient-4.2.3.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/httpcore-4.2.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/jcl-over-slf4j-1.6.4.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/jena-arq-2.11.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/jena-core-2.11.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/jena-iri-1.0.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/jena-sdb-1.4.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/jena-tdb-1.0.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/log4j-1.2.16.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/slf4j-api-1.6.4.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/slf4j-log4j12-1.6.4.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/xercesImpl-2.11.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/xml-apis-1.4.01.jar"/>
+	<classpathentry exported="true" kind="lib" path="java-rdfa-0.4.2-RC2.jar"/>
+	<classpathentry exported="true" kind="lib" path="jena-iri-1.0.1-SNAPSHOT.jar"/>
+	<classpathentry exported="true" kind="lib" path="iri.jar"/>
+	<classpathentry exported="true" kind="lib" path="icu4j-3.8.jar"/>
+	<classpathentry exported="true" kind="lib" path="org.apache.servicemix.bundles.woodstox-3.2.7_1.jar"/>
+	<classpathentry kind="output" path="target/classes"/>
+</classpath>
