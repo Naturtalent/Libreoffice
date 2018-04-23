@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" name="it.naturtalent.libreoffice.layerlayoutfactory">
-   <implementation class="it.naturtalent.libreoffice.draw.LayerLayoutFactoryRepository"/>
-   <service>
-      <provide interface="it.naturtalent.libreoffice.draw.ILayerLayoutFactoryRepository"/>
-   </service>
-</scr:component>

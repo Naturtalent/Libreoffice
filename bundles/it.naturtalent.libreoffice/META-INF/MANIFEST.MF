@@ -44,6 +44,5 @@ Require-Bundle: org.eclipse.ui,
  it.naturtalent.libreoffice.odf
 Import-Package: javax.inject;version="1.0.0",
   org.apache.commons.lang3
-Service-Component: OSGI-INF/layerlayoutfactoryrepository.xml
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7

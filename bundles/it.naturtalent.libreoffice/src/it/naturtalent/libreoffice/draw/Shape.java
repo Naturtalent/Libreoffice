@@ -8,6 +8,7 @@ import org.eclipse.swt.graphics.Rectangle;
 
 import com.sun.star.awt.Point;
 import com.sun.star.awt.Size;
+import com.sun.star.beans.Property;
 import com.sun.star.beans.PropertyVetoException;
 import com.sun.star.beans.UnknownPropertyException;
 import com.sun.star.beans.XPropertySet;
@@ -20,7 +21,7 @@ import com.sun.star.lang.WrappedTargetException;
 import com.sun.star.uno.UnoRuntime;
 import com.sun.star.view.XSelectionSupplier;
 
-public class Shape
+public class Shape implements IShape
 {
 	protected XShape xShape;
 	protected Layer layer;	
@@ -98,6 +99,8 @@ public class Shape
 	{
 		super();
 		this.xShape = xShape;
+		
+		//readShapeData();
 	}
 	
 	/**
@@ -182,6 +185,35 @@ public class Shape
 		return label;		
 	}
 	
+	public void readShapeData()
+	{
+		try
+		{
+			XPropertySet xPropSet = (XPropertySet) UnoRuntime.queryInterface(XPropertySet.class, xShape);
+			String label =  (String) xPropSet.getPropertyValue("UINamePlural");
+			
+			com.sun.star.awt.Rectangle rect = (com.sun.star.awt.Rectangle) xPropSet.getPropertyValue("BoundRect");
+			bound = new Rectangle(rect.X, rect.Y, rect.Width, rect.Height);
+			
+			//System.out.println(bound); 
+			
+			/*
+			Property [] props = xPropSet.getPropertySetInfo().getProperties();
+			for(Property prop : props)
+			{
+				System.out.println(prop.Name+" : "+xPropSet.getPropertyValue(prop.Name));
+			}
+			*/
+			
+		} catch (UnknownPropertyException | WrappedTargetException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+			
+	}
+
+	
 	
 	public void select(DrawDocument drawDocument)
 	{
@@ -220,6 +252,11 @@ public class Shape
 	public void setRotate(double rotate)
 	{
 		this.rotate = rotate;
+	}
+
+	public Rectangle getBound()
+	{
+		return bound;
 	}
 
 	

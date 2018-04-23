@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
 import javax.swing.plaf.synth.SynthSpinnerUI;
 
@@ -87,10 +88,27 @@ public class DrawDocumentUtils
 	// Systemlayernamen
 	private static Map <String, String>localLayerNamesMap;
 	
+	private static void initLocalLayerNames()
+	{
+		if (localLayerNamesMap == null)
+		{
+			localLayerNamesMap = new HashMap<String, String>();								
+			localLayerNamesMap.put("layout", "Layout");
+			localLayerNamesMap.put("background", "");
+			localLayerNamesMap.put("backgroundobjects", "");
+			localLayerNamesMap.put("controls", "Steuerelemente");
+			localLayerNamesMap.put("measurelines", "Maßlinien");
+		}
+
+	}
+	
 	// Layernamen werden intern in Locale Namen konvertiert (z.B. 'controls' in 'Steuerelemente'. 
 	// Diese Tabelle unterstuetzt die Simulation dieser Konvertierung 
-	private static String getLocalLayerName(String name)
+	public static String getLocalLayerName(String name)
 	{
+		initLocalLayerNames();
+		
+		/*
 		if (localLayerNamesMap == null)
 		{
 			localLayerNamesMap = new HashMap<String, String>();
@@ -101,9 +119,26 @@ public class DrawDocumentUtils
 			localLayerNamesMap.put("controls", "Steuerelemente");
 			localLayerNamesMap.put("measurelines", "Maßlinien");
 		}
+		*/
 		
 		return localLayerNamesMap.get(name);
 	}
+	
+	public static String getDrawLayerName(String name)
+	{
+		initLocalLayerNames();
+		
+		Set<String>keys = localLayerNamesMap.keySet();
+		for(String key : keys)
+		{
+			String value = localLayerNamesMap.get(key);
+			if(StringUtils.equals(value, name))
+				return key;
+		}
+		
+		return name;
+	}
+
 
 	// Systempagenamen
 	private static Map <String, String>localPageNamesMap;
@@ -1192,7 +1227,7 @@ public class DrawDocumentUtils
 	 *  Shapes
 	 * 
 	 * 
-	 */
+	 */	
 	
 	/**
 	 * Die Shapes eines Layers auflisten.
@@ -1257,7 +1292,7 @@ public class DrawDocumentUtils
 	}
 	
 	/**
-	 * Alle Shapes der Seite 'pageName' in einer Liste zurueckgeben
+	 * Alle im DrawDokument selektierten Shapes in einer Liste zurueckgeben
 	 *  
 	 * @param xComponent
 	 * @param pageName
@@ -1283,7 +1318,7 @@ public class DrawDocumentUtils
 				{
 					int n = xShapes.getCount();
 
-					// die Shapes einer Liste sammeln
+					// die Shapes in einer Liste sammeln
 					for (int i = 0; i < n; i++)
 					{
 						Object obj = xShapes.getByIndex(i);
@@ -1293,9 +1328,8 @@ public class DrawDocumentUtils
 							XShape xShape = UnoRuntime.queryInterface(XShape.class, any);
 							
 							Point pt = xShape.getPosition();
-							System.out.println(pt.X+"  "+pt.Y);
-							
-							
+							System.out.println("DocumentUtils.getSelectedShapes() "+pt.X+"  "+pt.Y);
+														
 							if (xShape != null)
 								shapeList.add(xShape);
 						}
