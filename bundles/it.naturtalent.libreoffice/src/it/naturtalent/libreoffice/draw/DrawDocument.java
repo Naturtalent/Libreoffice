@@ -1,23 +1,16 @@
 package it.naturtalent.libreoffice.draw;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.beans.PropertyChangeListenerProxy;
 import java.io.File;
-import java.security.AccessControlContext;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import javax.swing.JCheckBox;
-import javax.swing.plaf.synth.SynthSpinnerUI;
 
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -28,89 +21,49 @@ import org.eclipse.e4.core.services.events.IEventBroker;
 import org.eclipse.e4.ui.internal.workbench.E4Workbench;
 import org.eclipse.e4.ui.model.application.MApplication;
 import org.eclipse.e4.ui.workbench.IWorkbench;
-import org.eclipse.jface.dialogs.DialogMessageArea;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Display;
 import org.jnativehook.GlobalScreen;
-import org.jnativehook.NativeHookException;
-import org.jnativehook.mouse.NativeMouseEvent;
-import org.jnativehook.mouse.NativeMouseListener;
 
 import com.sun.star.accessibility.XAccessible;
 import com.sun.star.accessibility.XAccessibleComponent;
 import com.sun.star.accessibility.XAccessibleContext;
 import com.sun.star.awt.Point;
-import com.sun.star.awt.Rectangle;
+//import com.sun.star.awt.Rectangle;
 import com.sun.star.awt.Size;
-import com.sun.star.awt.XControl;
-import com.sun.star.awt.XExtendedToolkit;
-import com.sun.star.awt.XMenuBar;
-import com.sun.star.awt.XToolkit;
 import com.sun.star.awt.XTopWindow;
-import com.sun.star.awt.XTopWindowListener;
 import com.sun.star.awt.XWindow;
-import com.sun.star.beans.Property;
 import com.sun.star.beans.PropertyChangeEvent;
 import com.sun.star.beans.PropertyValue;
-import com.sun.star.beans.PropertyVetoException;
 import com.sun.star.beans.UnknownPropertyException;
 import com.sun.star.beans.XPropertyChangeListener;
 import com.sun.star.beans.XPropertySet;
-import com.sun.star.container.XIndexAccess;
 import com.sun.star.container.XNameAccess;
 import com.sun.star.container.XNamed;
 import com.sun.star.drawing.HomogenMatrixLine3;
 import com.sun.star.drawing.PolyPolygonBezierCoords;
 import com.sun.star.drawing.XDrawPage;
-import com.sun.star.drawing.XDrawPages;
-import com.sun.star.drawing.XDrawPagesSupplier;
 import com.sun.star.drawing.XLayer;
 import com.sun.star.drawing.XLayerManager;
 import com.sun.star.drawing.XLayerSupplier;
 import com.sun.star.drawing.XShape;
 import com.sun.star.drawing.XShapes;
-import com.sun.star.drawing.framework.XConfigurationController;
-import com.sun.star.drawing.framework.XPane;
-import com.sun.star.drawing.framework.XResourceId;
-import com.sun.star.frame.DispatchResultEvent;
-import com.sun.star.frame.FeatureStateEvent;
-import com.sun.star.frame.FrameSearchFlag;
 import com.sun.star.frame.XComponentLoader;
 import com.sun.star.frame.XController;
 import com.sun.star.frame.XDesktop;
-import com.sun.star.frame.XDispatch;
-import com.sun.star.frame.XDispatchHelper;
-import com.sun.star.frame.XDispatchProvider;
 import com.sun.star.frame.XFrame;
-import com.sun.star.frame.XLayoutManager;
 import com.sun.star.frame.XModel;
-import com.sun.star.frame.XStatusListener;
-import com.sun.star.frame.XStatusbarController;
-import com.sun.star.lang.DisposedException;
 import com.sun.star.lang.EventObject;
-import com.sun.star.lang.IllegalArgumentException;
 import com.sun.star.lang.WrappedTargetException;
 import com.sun.star.lang.XComponent;
 import com.sun.star.lang.XEventListener;
 import com.sun.star.lang.XMultiComponentFactory;
 import com.sun.star.lang.XMultiServiceFactory;
-import com.sun.star.rendering.XCanvas;
-import com.sun.star.report.XSection;
-import com.sun.star.security.XAccessControlContext;
-import com.sun.star.ui.UIElementType;
-import com.sun.star.ui.XStatusbarItem;
-import com.sun.star.ui.XUIConfigurationManager;
-import com.sun.star.ui.XUIElement;
 import com.sun.star.uno.Any;
-import com.sun.star.uno.Type;
-import com.sun.star.uno.AnyConverter;
 import com.sun.star.uno.UnoRuntime;
 import com.sun.star.uno.XComponentContext;
 import com.sun.star.uno.XInterface;
-import com.sun.star.util.URL;
-import com.sun.star.util.XURLTransformer;
-import com.sun.star.util.XUpdatable;
-import com.sun.star.view.XControlAccess;
 import com.sun.star.view.XSelectionSupplier;
 
 import it.naturtalent.libreoffice.Bootstrap;
@@ -119,25 +72,14 @@ import it.naturtalent.libreoffice.DrawDocumentEvent;
 import it.naturtalent.libreoffice.DrawDocumentUtils;
 import it.naturtalent.libreoffice.DrawPagePropertyListener;
 import it.naturtalent.libreoffice.DrawShape;
+import it.naturtalent.libreoffice.DrawShape.SHAPEPROP;
 import it.naturtalent.libreoffice.FrameActionListener;
 import it.naturtalent.libreoffice.PageHelper;
 //import it.naturtalent.libreoffice.ServiceManager;
 import it.naturtalent.libreoffice.ShapeSelectionListener;
 import it.naturtalent.libreoffice.Utils;
-import it.naturtalent.libreoffice.environment.example.FunctionHelper;
-import it.naturtalent.libreoffice.listeners.ActiveLayerPropertyListener;
-import it.naturtalent.libreoffice.listeners.FocusListener;
 import it.naturtalent.libreoffice.listeners.GlobalMouseListener;
-import it.naturtalent.libreoffice.listeners.GlobalMouseMoveListener;
-import it.naturtalent.libreoffice.listeners.MouseListener;
-import it.naturtalent.libreoffice.listeners.StatusBarListener;
-import it.naturtalent.libreoffice.utils.Draw;
-import it.naturtalent.libreoffice.utils.GUI;
-import it.naturtalent.libreoffice.utils.ItemInterceptor;
-import it.naturtalent.libreoffice.utils.Lo;
 import it.naturtalent.libreoffice.utils.Props;
-import it.naturtalent.libreoffice.utils.ToolbarItemListener;
-import it.naturtalent.libreoffice.utils.XTopWindowAdapter;
 
 public class DrawDocument
 {
@@ -551,7 +493,7 @@ public class DrawDocument
 		}
 		*/
 	}
-
+	
 	/**
 	 * Statusbarposition auslesen und transformieren um die Laengeneinheit und
 	 * die aktuelle DrawBorderEinstellung.
@@ -697,6 +639,15 @@ public class DrawDocument
 		return allPages;
 	}
 	
+	/**
+	 * Liest alle XShapes eines Layers.
+	 * Fuer jedes xShape wird eine unspezifischen DrawShape erzeugt und diese werden in einer
+	 * Liste zurueckgegeben.
+	 * 
+	 * @param pageName
+	 * @param layerName
+	 * @return
+	 */
 	public List<DrawShape>getLayerShapes(String pageName, String layerName)
 	{
 		List<DrawShape>drawShapes = new ArrayList<DrawShape>();
@@ -704,46 +655,221 @@ public class DrawDocument
 		List<XShape>xShapes = DrawDocumentUtils.getLayerShapes(xComponent, pageName, layerName);		
 		for(XShape xShape : xShapes)
 		{
-			DrawShape drawShape = new DrawShape();
-			drawShape.type = xShape.getShapeType();
-			drawShape.xShape = xShape;
-			drawShapes.add(drawShape);
+			XPropertySet xPropSet = (XPropertySet) UnoRuntime.queryInterface(XPropertySet.class, xShape);
+			try
+			{
+				com.sun.star.awt.Rectangle rect = (com.sun.star.awt.Rectangle) xPropSet.getPropertyValue("BoundRect");
+				DrawShape drawShape = new DrawShape(rect.X, rect.Y, rect.Width, rect.Height);
+				drawShape.setDrawShapeType(SHAPEPROP.Label);
+				drawShape.xShape = xShape;
+				drawShapes.add(drawShape);
+
+			} catch (UnknownPropertyException | WrappedTargetException e)
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		
 		return drawShapes;
 	}
-
+	
 	/**
-	 * Die Shapes eines Layers auflisten.
+	 * Universelle DrawShape-Propertyabfrage
 	 * 
+	 * @param drawProperty - in DrawShape definiert
 	 * @return
 	 */
-	public List<IShape> getLayerShapesOLD(String layerName,
-			String shapeFactoryName)
+	public Object getDrawShapeProperty(DrawShape drawShape)
 	{
-		List<IShape> shapes = new ArrayList<>();
-
-		// xShapes vom DrawDocument lesen
-		List<String> pagenNames = getAllPages(false);
-		List<XShape> xShapes = DrawDocumentUtils.getLayerShapes(xComponent,pagenNames.get(1), layerName);
-		
-		if (shapeFactoryName == null)
-		{
-			// Standard Shape
-			for (XShape xShape : xShapes)
+		switch (drawShape.getDrawShapeType())
 			{
-				Shape shape = new Shape(xShape);
-				shapes.add(shape);
+				case Label:
+					return /* String */ DrawDocumentUtils.getShapeLabel((XShape) (drawShape.xShape));
+										
+				case Line:
+					
+					ShapeLineLengthUtils lengthUtils = new ShapeLineLengthUtils();					
+					return /* BigDecimal */ lengthUtils.getLineLength((XShape) (drawShape.xShape));
+
+				default:
+					break;
 			}
-		}
-		else
-		{
-
-		}
-
-		return shapes;
+		
+		return null;
 	}
 
+	/**
+	 * Die gelisteten Shapes 'drawShapes' werden in die aktuelle Seite eigefuegt und somit sichtbar.
+	 * Ist der 'layerName' != null, werden die Shapes diesem Layer zugeordnet.
+	 * Ist der 'layerName' == null, werden die Shapes dem Layer 'layout' zugeordnet. 
+	 * 
+	 * @param layerName
+	 * @param drawShapes
+	 */
+	public void setLayerShapes(String layerName, List<DrawShape>drawShapes)
+	{
+		XShape xShape;
+		XLayer xLayer = null;
+		XDrawPage xDrawPage = DrawDocumentUtils.getCurrentPage(xComponent);
+		if(StringUtils.isNotEmpty(layerName))
+			xLayer = DrawDocumentUtils.findLayer(xComponent, layerName);
+
+		if(xDrawPage != null)
+		{
+			// xShapes = Shapesliste der aktuellen Page zu der die 'drawShapes' hinzugefuegt werden
+			XShapes xShapes = UnoRuntime.queryInterface(XShapes.class,xDrawPage);
+			for (DrawShape drawShape : drawShapes)
+			{
+				Point pos = new Point(drawShape.getX(), drawShape.getY());
+				Size size = new Size(drawShape.getWidht(),drawShape.getHeight());
+				String xType = null;
+				switch (drawShape.getDrawShapeType())
+					{
+						// der Linientyp wird durch Analyse der xShape Daten
+						// spezifiziert
+						case Line:
+							if (drawShape.xShape == null)
+							{
+								xType = DrawDocumentUtils.LineShapeType;
+								break;
+							}
+
+						default:
+							break;
+					}
+				
+				if (xType != null)
+				{
+					// xShape erzeugen und den 'page'-Shapes hinzufuegen  
+					xShape = DrawDocumentUtils.createShape(xComponent, pos,size, xType);					
+					xShapes.add(xShape);
+					
+					// den erzeugten xShape im DrawShape speichern 
+					drawShape.setxShape(xShape);
+					
+					// ist ein xLayer definiert, werden die Shapes diesem zugeordnet
+					if(xLayer != null)
+						DrawDocumentUtils.attacheShapeToLayer(xComponent, xLayer, xShape);
+				}
+			}
+		}
+	}
+	
+	/**
+	 * Shapes in der aktuellen Seite loeschen.
+	 * 
+	 * @param drawShapes
+	 */
+	public void removeShapes(List<DrawShape>drawShapes)
+	{
+		XDrawPage xDrawPage = DrawDocumentUtils.getCurrentPage(xComponent);
+		if(xDrawPage != null)
+		{
+			XShapes xShapes = UnoRuntime.queryInterface(XShapes.class,xDrawPage);
+			for (DrawShape drawShape : drawShapes)		
+				xShapes.remove((XShape) drawShape.getxShape());		
+		}
+	}
+	
+	public void selectShape(DrawShape drawShape)
+	{
+		DrawDocumentUtils.shapeSelection(xComponent, (XShape) drawShape.xShape);
+	}
+	
+	/**
+	 * @param propertyName
+	 * @param value
+	 */
+	public void setDocumentSettings(String propertyName, Object value)
+	{
+		if (xComponent != null)
+		{
+			try
+			{
+				XMultiServiceFactory xFactory = UnoRuntime.queryInterface(
+						XMultiServiceFactory.class, xComponent);
+				XInterface settings = (XInterface) xFactory
+						.createInstance("com.sun.star.drawing.DocumentSettings");
+				XPropertySet xPageProperties = UnoRuntime.queryInterface(
+						XPropertySet.class, settings);				
+				xPageProperties.setPropertyValue(propertyName, value);
+				
+			} catch (Exception e)
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}	
+	}
+	
+	/**
+	 * @param propertyName
+	 * @return
+	 */
+	public Object getDocumentStettings(String propertyName)
+	{
+		if (xComponent != null)
+		{
+			try
+			{
+				XMultiServiceFactory xFactory = UnoRuntime.queryInterface(
+						XMultiServiceFactory.class, xComponent);
+				XInterface settings = (XInterface) xFactory
+						.createInstance("com.sun.star.drawing.DocumentSettings");
+				XPropertySet xPageProperties = UnoRuntime.queryInterface(
+						XPropertySet.class, settings);
+				return xPageProperties.getPropertyValue(propertyName);
+			} catch (Exception e)
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+			
+		return null;
+	}
+	
+	/**
+	 * Layerproperties setzen
+	 * Die Propertynamen sind in DrawDocumentUtils definiert.
+	 * 
+	 * @param propertyName
+	 * @param value
+	 */
+	public void setLayerProperty(String layerName, String propertyName, Object value)
+	{
+		if(StringUtils.equals(propertyName, DrawDocumentUtils.LAYERLOCK))
+		{
+			XLayer xLayer = DrawDocumentUtils.findLayer(xComponent, layerName);
+			if(xLayer != null)
+			{
+				DrawDocumentUtils.setLayerLock(xLayer, (boolean) value);
+				return;
+			}
+		}
+	}
+	
+	/**
+	 * Layerproperties abfragen
+	 * Die Propertynamen sind in DrawDocumentUtils definiert.
+	 * 
+	 * @param layerName
+	 * @param propertyName
+	 * @return
+	 */
+	public Object getLayerProperty(String layerName, String propertyName)
+	{
+		if(StringUtils.equals(propertyName, DrawDocumentUtils.LAYERLOCK))
+		{
+			XLayer xLayer = DrawDocumentUtils.findLayer(xComponent, layerName);
+			if(xLayer != null)
+				return DrawDocumentUtils.getLayerLock(xLayer);
+		}
+		return null;
+	}
+
+		
 	/**
 	 * Die Shapes eines Layers zurueckgeben
 	 * 
@@ -947,7 +1073,7 @@ public class DrawDocument
 			}
 		}
 
-		// Seite akktivieren
+		// Seite akkivieren
 		if (xDrawPage != null)
 			PageHelper.setCurrentPage(xComponent, xDrawPage);
 	}
@@ -1383,5 +1509,7 @@ public class DrawDocument
 
 		return null;
 	}
+	
+
 
 }

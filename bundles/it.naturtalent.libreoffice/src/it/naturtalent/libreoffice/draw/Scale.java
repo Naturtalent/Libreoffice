@@ -143,13 +143,13 @@ public class Scale
 	 * Zielwert geteilt wird. Man definiert: die gezeichnet Linie hat eine Laenge von x-Meter und erhaelt damit den
 	 * Masstab.
 	 * 
-	 * @param referenceLength
-	 * @param targetLength
+	 * @param lineLength
+	 * @param dialogLength
 	 */
-	public void calculateScaleByLineLength(BigDecimal referenceLength, BigDecimal targetLength)
+	public void calculateScaleByLineLength(BigDecimal lineLength, BigDecimal dialogLength)
 	{
-		BigDecimal doubleMass = targetLength.multiply(measureFactor);		
-		doubleMass = doubleMass.divide(referenceLength, BigDecimal.ROUND_UP);
+		BigDecimal doubleMass = dialogLength.multiply(measureFactor);		
+		doubleMass = doubleMass.divide(lineLength, BigDecimal.ROUND_UP);
 		scaleDenominator = doubleMass.intValue();
 		pushScaleProperties();
 	}

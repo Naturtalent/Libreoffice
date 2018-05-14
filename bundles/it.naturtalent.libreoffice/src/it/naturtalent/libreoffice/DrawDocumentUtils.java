@@ -7,12 +7,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 
 import javax.swing.plaf.synth.SynthSpinnerUI;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.eclipse.swt.graphics.Rectangle;
 
 import com.sun.star.accessibility.AccessibleRole;
 import com.sun.star.accessibility.XAccessible;
@@ -20,7 +22,7 @@ import com.sun.star.accessibility.XAccessibleComponent;
 import com.sun.star.accessibility.XAccessibleContext;
 import com.sun.star.accessibility.XAccessibleText;
 import com.sun.star.awt.Point;
-import com.sun.star.awt.Rectangle;
+//import com.sun.star.awt.Rectangle;
 import com.sun.star.awt.Size;
 import com.sun.star.awt.XExtendedToolkit;
 import com.sun.star.awt.XTopWindow;
@@ -85,6 +87,26 @@ import it.naturtalent.libreoffice.utils.Props;
 
 public class DrawDocumentUtils
 {
+	// DrawDocumentSettings
+	public static final String SCALENUMERATOR = "ScaleNumerator";
+	public static final String SCALEDENOMINATOR = "ScaleDenominator";
+	public static final String MEASUREUNIT = "MeasureUnit";
+	
+	// Layerproperties
+	public static final String LAYERLOCK = "IsLocked";
+
+	// xShape Defininitonen
+	public static final String LineShapeType = "com.sun.star.drawing.LineShape";
+	public static final String RectangleShapeType = "com.sun.star.drawing.RectangleShape";
+	public static final String PolyLineShapeType = "com.sun.star.drawing.PolyLineShape";
+	public static final String PolyPolygonType = "com.sun.star.drawing.PolyPolygonShape";
+	public static final String OpenBezierType = "com.sun.star.drawing.OpenBezierShape";
+	public static final String CustomType = "com.sun.star.drawing.CustomShape";
+	public static final String TextShapeType = "com.sun.star.drawing.TextShape";
+	public static final String EllipseShapeType = "com.sun.star.drawing.EllipseShape";
+	public static final String GraphicObjectShapeType = "com.sun.star.drawing.GraphicObjectShape";
+	public static final String GroupShapeType = "com.sun.star.drawing.GroupShape";
+
 	// Systemlayernamen
 	private static Map <String, String>localLayerNamesMap;
 	
@@ -861,6 +883,12 @@ public class DrawDocumentUtils
 
 	}
     
+    /**
+     * Gibt die aktuelle Page zurueck.
+     * 
+     * @param xComponent
+     * @return
+     */
     static public XDrawPage getCurrentPage(XComponent xComponent)
  	{
  		try
@@ -924,6 +952,8 @@ public class DrawDocumentUtils
 		return null;
 	}
 	
+
+	
 	/**
 	 * Anzahl der Seiten zurueckgeben.
 	 * 
@@ -937,7 +967,54 @@ public class DrawDocumentUtils
 		XDrawPages xDrawPages = xDrawPagesSupplier.getDrawPages();
 		return xDrawPages.getCount();
 	}
+	
+	
+	/**
+	 * Eine zufallsbedingte Abgrenzung auf der aktuellen Seite definieren.
+	 *   
+	 * @param xComponent
+	 * @return
+	 */
+	public static Rectangle getCurrentPageRandomBound(XComponent xComponent)
+	{
+		String pageName = getCurrentPageName(xComponent);
+		if(StringUtils.isNotEmpty(pageName))
+		{
+			XDrawPage xDrawPage = PageHelper.getDrawPageByName(xComponent,pageName);
+			
+			Size aPageSize = getPageSize(xDrawPage );
+			
+			int nHalfWidth = aPageSize.Width / 2;
+			int nHalfHeight = aPageSize.Height / 2;
 
+			Random aRndGen = new Random();
+			int nRndObjWidth = aRndGen.nextInt(nHalfWidth);
+			int nRndObjHeight = aRndGen.nextInt(nHalfHeight);
+
+			int nRndObjPosX = aRndGen.nextInt(nHalfWidth - nRndObjWidth)
+					+ nRndObjWidth;
+			int nRndObjPosY = aRndGen.nextInt(nHalfHeight - nRndObjHeight)
+					+ nHalfHeight;
+
+			return new Rectangle(nRndObjPosX, nRndObjPosY, nRndObjWidth,
+					nRndObjHeight);
+		}
+		
+		return null;
+	}
+
+	/**
+	 * Den Namen der aktuellen Page zurueckgeben
+	 * 
+	 * @param xComponent
+	 * @return
+	 */
+	public static String getCurrentLocalPageName(XComponent xComponent)
+	{		
+		XDrawPage xDrawPage = getCurrentPage(xComponent);
+		return (xDrawPage != null) ? getPageName(xDrawPage) : null;
+	}
+	
 	/**
 	 * Den Namen der aktuellen Page zurueckgeben
 	 * 
@@ -978,6 +1055,35 @@ public class DrawDocumentUtils
 	 *  Layer
 	 * 
 	 */
+
+	public static void setLayerLock(XLayer xLayer, boolean lock)
+	{
+		XPropertySet xLayerPropSet = UnoRuntime.queryInterface(XPropertySet.class, xLayer);
+		try
+		{			
+			xLayerPropSet.setPropertyValue(LAYERLOCK, lock);
+		} catch (Exception e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}		
+	}
+	
+	public static Object getLayerLock(XLayer xLayer)
+	{
+		XPropertySet xLayerPropSet = UnoRuntime.queryInterface(XPropertySet.class, xLayer);
+		try
+		{			
+			return xLayerPropSet.getPropertyValue(LAYERLOCK);
+		} catch (Exception e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
+
 	
 	/**
 	 * Alle Layernamen in einer Liste zurueckgeben.
@@ -1228,6 +1334,33 @@ public class DrawDocumentUtils
 	 * 
 	 * 
 	 */	
+	
+	/**
+	 * Ein Shape einem Layer zuordnen.
+	 * 
+	 * @param xComponent
+	 * @param xShape
+	 * @param xLayer
+	 */
+	public static void attacheShapeToLayer(XComponent xComponent, XLayer xLayer, XShape xShape)
+	{
+		// Shape dem Layer zuordnen
+        XLayerSupplier xLayerSupplier = UnoRuntime.queryInterface(
+                XLayerSupplier.class, xComponent);
+        XNameAccess xNameAccess = xLayerSupplier.getLayerManager();
+        XLayerManager xLayerManager = UnoRuntime.queryInterface(
+                XLayerManager.class, xNameAccess );
+        xLayerManager.attachShapeToLayer(xShape, xLayer);       	
+	}
+	
+	public static void shapeSelection(XComponent xComponent, XShape xShape)
+	{
+		XModel xModel = UnoRuntime.queryInterface(XModel.class, xComponent);
+		XController xController = xModel.getCurrentController();
+		XSelectionSupplier xSelectionSupplier = UnoRuntime.queryInterface(
+				XSelectionSupplier.class, xController);
+		xSelectionSupplier.select(xShape);	
+	}
 	
 	/**
 	 * Die Shapes eines Layers auflisten.

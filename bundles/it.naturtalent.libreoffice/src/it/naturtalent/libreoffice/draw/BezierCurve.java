@@ -6,6 +6,12 @@ import java.util.List;
 
 import org.eclipse.swt.graphics.Point;
 
+/**
+ * Konvertierung von Bezierkurven
+ * 
+ * @author dieter
+ *
+ */
 public class BezierCurve
 {
 
@@ -13,6 +19,11 @@ public class BezierCurve
 	
 	private List<Point>points = new ArrayList<Point>();
 
+	/**
+	 * Bezier in PolyLine konvertieren
+	 * 
+	 * @param bezierPoints
+	 */
 	public void convertToPoly(Point[] bezierPoints)
 	{		
 		int n = bezierPoints.length -3;
@@ -98,6 +109,11 @@ public class BezierCurve
 		points.add(point);
 	}
 	
+	/**
+	 * Die konvertierten Punkte zurueckgeben.
+	 * 
+	 * @return
+	 */
 	public Point[] getPolyLines()
 	{
 		/*
