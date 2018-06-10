@@ -13,7 +13,6 @@ import org.eclipse.e4.ui.model.application.commands.MCommand;
 import org.eclipse.e4.ui.workbench.UIEvents;
 import org.osgi.service.event.Event;
 
-import it.naturtalent.e4.project.INewActionAdapterRepository;
 import it.naturtalent.e4.project.ui.DynamicNewMenu;
 
 public class LibreOfficeAddon
@@ -31,6 +30,11 @@ public class LibreOfficeAddon
 	public static final String NEW_CALC_LABEL = "Kalkulation"; //$NON-NLS-1$
 	public static final String NEW_CALC_COMMAND_ID = "it.naturtalent.libreoffice.command.newcalcdocument"; //$NON-NLS-1$
 
+	public static final String NEW_TEXT_MENUE_ID = "it.naturtalent.e4.libreoffice.menue.TextDocument"; //$NON-NLS-1$
+	public static final String NEW_TEXT_LABEL = "Text"; //$NON-NLS-1$
+	public static final String NEW_TEXT_COMMAND_ID = "it.naturtalent.libreoffice.command.newtextdocument"; //$NON-NLS-1$
+
+	// Position im KontextMenue
 	private static final int DRAW_MENUE_POSITION = 3;
 	
 	@Inject
@@ -48,7 +52,10 @@ public class LibreOfficeAddon
 				newMenu.addHandledDynamicItem(NEW_DRAW_MENUE_ID,NEW_DRAW_LABEL,command,DRAW_MENUE_POSITION);				
 
 			if(StringUtils.equals(command.getElementId(),NEW_CALC_COMMAND_ID))
-				newMenu.addHandledDynamicItem(NEW_CALC_MENUE_ID,NEW_CALC_LABEL,command,DRAW_MENUE_POSITION+1);				
+				newMenu.addHandledDynamicItem(NEW_CALC_MENUE_ID,NEW_CALC_LABEL,command,DRAW_MENUE_POSITION+1);
+			
+			if(StringUtils.equals(command.getElementId(),NEW_TEXT_COMMAND_ID))
+				newMenu.addHandledDynamicItem(NEW_TEXT_MENUE_ID,NEW_TEXT_LABEL,command,DRAW_MENUE_POSITION+2);			
 		}
 	}
 

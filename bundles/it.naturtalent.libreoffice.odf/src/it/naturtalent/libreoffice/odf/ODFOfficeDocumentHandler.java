@@ -2,21 +2,10 @@ package it.naturtalent.libreoffice.odf;
 
 
 
-import java.awt.Desktop;
 import java.io.File;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.SystemUtils;
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.core.runtime.preferences.DefaultScope;
-import org.eclipse.core.runtime.preferences.IEclipsePreferences;
-import org.eclipse.core.runtime.preferences.InstanceScope;
-import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.swt.widgets.Display;
 import org.odftoolkit.odfdom.dom.element.meta.MetaUserDefinedElement;
 import org.odftoolkit.simple.TextDocument;
 import org.odftoolkit.simple.meta.Meta;

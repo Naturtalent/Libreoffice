@@ -61,7 +61,11 @@ public class TerminateListener implements XTerminateListener
 		drawDocument.closeDocument();
 		//DrawDocument.openTerminateDocumentMap.remove(this);
 		 
-		 */
+		 */	
+		
+		DrawDocument drawDocument = DrawDocument.openTerminateDocumentMap.get(this);
+		drawDocument.removeShapeSelectionListener();
+		
 		if(eventBroker != null)
 			eventBroker.post(DrawDocumentEvent.DRAWDOCUMENT_EVENT_DOCUMENT_CLOSE, (Object) eventObject);	
 	}

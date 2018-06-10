@@ -22,7 +22,6 @@ public class ShapeSelectionListener implements XSelectionChangeListener
 	public void disposing(EventObject arg0)
 	{
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override

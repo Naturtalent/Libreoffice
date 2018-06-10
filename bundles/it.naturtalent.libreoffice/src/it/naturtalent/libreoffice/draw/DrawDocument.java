@@ -315,7 +315,7 @@ public class DrawDocument
 						@Override
 						public void propertyChange(PropertyChangeEvent arg0)
 						{
-							System.out.println("L A Y E R");
+							System.out.println("DrawDocument().315 - L A Y E R");
 
 						}
 					});
@@ -408,6 +408,17 @@ public class DrawDocument
 					shapeList.get(0));
 			DrawDocumentUtils.selectLayer(xComponent, xLayer);
 		}
+	}
+	
+	public void removeShapeSelectionListener()
+	{
+		XModel xModel = UnoRuntime.queryInterface(XModel.class, xComponent);
+		XController xController = xModel.getCurrentController();
+		selectionSupplier = UnoRuntime
+				.queryInterface(XSelectionSupplier.class, xController);
+		shapeSelectionListener = new ShapeSelectionListener();
+		selectionSupplier
+				.removeSelectionChangeListener(shapeSelectionListener);
 	}
 
 	/**
