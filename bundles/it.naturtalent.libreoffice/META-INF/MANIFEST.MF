@@ -19,10 +19,11 @@ Bundle-ClassPath: lib/java_uno_accessbridge.jar,
 Bundle-Activator: it.naturtalent.libreoffice.Activator
 Bundle-Vendor: dieter.apel
 Export-Package: it.naturtalent.libreoffice,
-  it.naturtalent.libreoffice.calc,
-  it.naturtalent.libreoffice.draw,
-  org.jnativehook,
-  org.jnativehook.mouse
+ it.naturtalent.libreoffice.calc,
+ it.naturtalent.libreoffice.draw,
+ it.naturtalent.libreoffice.text,
+ org.jnativehook,
+ org.jnativehook.mouse
 Require-Bundle: org.eclipse.ui,
   org.eclipse.core.runtime,
   org.eclipse.e4.ui.model.workbench;bundle-version="1.1.0.v20140512-1820",
