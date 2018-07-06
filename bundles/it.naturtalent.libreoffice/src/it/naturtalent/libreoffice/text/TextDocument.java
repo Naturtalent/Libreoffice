@@ -1,9 +1,5 @@
 package it.naturtalent.libreoffice.text;
 
-import it.naturtalent.libreoffice.Bootstrap;
-import it.naturtalent.libreoffice.DrawDocumentEvent;
-import it.naturtalent.libreoffice.draw.TerminateListener;
-
 import java.io.File;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -25,6 +21,9 @@ import com.sun.star.uno.UnoRuntime;
 import com.sun.star.uno.XComponentContext;
 import com.sun.star.view.XSelectionChangeListener;
 import com.sun.star.view.XSelectionSupplier;
+
+import it.naturtalent.libreoffice.Bootstrap;
+import it.naturtalent.libreoffice.draw.TerminateListener;
 
 public class TextDocument
 {

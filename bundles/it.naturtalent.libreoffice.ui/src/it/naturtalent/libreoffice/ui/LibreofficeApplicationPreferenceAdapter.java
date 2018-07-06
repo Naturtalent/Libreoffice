@@ -31,12 +31,17 @@ import org.osgi.service.prefs.BackingStoreException;
 
 import it.naturtalent.application.ChooseWorkspaceData;
 import it.naturtalent.application.IPreferenceNode;
-import it.naturtalent.application.Messages;
 import it.naturtalent.e4.preferences.AbstractPreferenceAdapter;
 import it.naturtalent.e4.preferences.DirectoryEditorComposite;
 import it.naturtalent.e4.preferences.handlers.PreferenceHandler;
 
 
+/**
+ * Preferenzadapter zur Einstellung der externen Libreoffice-Anwendung.
+ * 
+ * @author dieter
+ *
+ */
 public class LibreofficeApplicationPreferenceAdapter extends AbstractPreferenceAdapter
 {
 	
