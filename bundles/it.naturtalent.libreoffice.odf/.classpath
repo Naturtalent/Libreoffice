@@ -3,7 +3,7 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry kind="src" path="src/"/>
-	<classpathentry exported="true" kind="lib" path="simple-odf-0.7-incubating.jar"/>
+	<classpathentry exported="true" kind="lib" path="simple-odf-0.7-incubating.jar" sourcepath="/home/dieter/Repositories/Libreoffice/bundles/it.naturtalent.libreoffice.odf/odftoolkit-0.6-incubating-src.zip"/>
 	<classpathentry exported="true" kind="lib" path="odfdom-java-0.8.9-incubating.jar"/>
 	<classpathentry exported="true" kind="lib" path="utils-0.2-SNAPSHOT.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/commons-codec-1.6.jar"/>
