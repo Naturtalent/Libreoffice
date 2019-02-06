@@ -7,6 +7,11 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.e4.core.services.events.IEventBroker;
+import org.eclipse.e4.ui.internal.workbench.E4Workbench;
+import org.eclipse.e4.ui.model.application.MApplication;
+import org.eclipse.e4.ui.workbench.IWorkbench;
+import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.swt.widgets.Display;
 
 import com.sun.star.beans.PropertyValue;
 import com.sun.star.frame.XComponentLoader;
@@ -39,6 +44,9 @@ public class TextDocument
 	
 	public void loadPage(final String documentPath)
 	{
+		MApplication currentApplication = E4Workbench.getServiceContext().get(IWorkbench.class).getApplication();
+		eventBroker = currentApplication.getContext().get(IEventBroker.class);
+		
 		Job j = new Job("Load Job") //$NON-NLS-1$
 		{
 			@Override

@@ -13,12 +13,15 @@ import org.eclipse.e4.ui.model.application.commands.MCommand;
 import org.eclipse.e4.ui.workbench.UIEvents;
 import org.osgi.service.event.Event;
 
+import it.naturtalent.application.services.IOpenWithEditorAdapterRepository;
 import it.naturtalent.e4.project.ui.DynamicNewMenu;
 
 public class LibreOfficeAddon
 {
 
 	private @Inject @Optional MApplication application;
+	
+	@Inject @Optional private IOpenWithEditorAdapterRepository openwithAdapterRepository;
 	
 	
 	// Dynamic New
@@ -43,6 +46,9 @@ public class LibreOfficeAddon
 	{
 		String label;
 		DynamicNewMenu newMenu = new DynamicNewMenu();
+		
+		// Adapter zum Oeffnen von odt-Dateien mit Libreoffice
+		openwithAdapterRepository.getOpenWithAdapters().add(new LibreofficeOpenWithAdapter());
 		
 		// dyn. Menues definieren
 		List<MCommand>commands = application.getCommands();
