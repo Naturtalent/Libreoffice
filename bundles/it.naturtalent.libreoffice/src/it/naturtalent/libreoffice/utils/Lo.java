@@ -531,8 +531,11 @@ public class Lo
   }
 
 
-  public static XComponent openDoc(String fnm, XComponentLoader loader)
-  {  return openDoc(fnm, loader, Props.makeProps("Hidden", true) );  }
+	public static XComponent openDoc(String fnm, XComponentLoader loader)
+	{
+		return openDoc(fnm, loader, Props.makeProps("Hidden", true));
+		//return openDoc(fnm, loader, new PropertyValue[0]);
+	}
 
 
   public static XComponent openReadOnlyDoc(String fnm, XComponentLoader loader)
