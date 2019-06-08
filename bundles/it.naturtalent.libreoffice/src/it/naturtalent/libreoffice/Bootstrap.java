@@ -129,6 +129,8 @@ public class Bootstrap
 			}
 		} catch (final Exception e)
 		{
+			e.printStackTrace();
+			/*
 			Display.getDefault().syncExec(new Runnable()
 			{
 				public void run()
@@ -147,7 +149,8 @@ public class Bootstrap
 									"LibreOffice",
 									"Fehler beim Zugriff auf LibreOffice");
 				}
-			});				
+			});
+			*/				
 		}
 		
 		

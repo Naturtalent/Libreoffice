@@ -2,6 +2,7 @@ package it.naturtalent.libreoffice.text;
 
 import java.io.File;
 
+import org.apache.commons.lang3.SystemUtils;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -14,6 +15,7 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Display;
 
 import com.sun.star.beans.PropertyValue;
+import com.sun.star.comp.helper.BootstrapException;
 import com.sun.star.frame.TerminationVetoException;
 import com.sun.star.frame.XComponentLoader;
 import com.sun.star.frame.XController;
@@ -29,10 +31,12 @@ import com.sun.star.uno.XComponentContext;
 import com.sun.star.view.XSelectionChangeListener;
 import com.sun.star.view.XSelectionSupplier;
 
+import it.naturtalent.libreoffice.Activator;
 import it.naturtalent.libreoffice.Bootstrap;
 import it.naturtalent.libreoffice.draw.TerminateListener;
 import it.naturtalent.libreoffice.utils.GUI;
 import it.naturtalent.libreoffice.utils.Lo;
+import it.naturtalent.libreoffice.utils.examples.DocMonitor;
 
 public class TextDocument
 {
@@ -46,8 +50,73 @@ public class TextDocument
 	private IEventBroker eventBroker;
 	private XDesktop xDesktop;
 	
+	private static final String libPath = "/usr/lib/libreoffice/program";
+	
+	// echo -e PATH=\"/usr/lib/libreoffice/program:\$PATH\" >> $HOME/.profile
+	
 	public void loadPage(final String documentPath)
 	{
+		XComponentLoader xComponentLoader = Lo.getOfficeLoader();
+		
+		if(xComponentLoader != null)
+		{
+			
+			XDesktop xDesktop = Lo.getDesktop();
+			xDesktop.addTerminateListener(new XTerminateListener()
+			{
+				public void queryTermination(EventObject e)
+						throws TerminationVetoException
+				{
+					System.out.println("TL: Starting Closing");
+				}
+
+				public void notifyTermination(EventObject e)
+				{
+					System.out.println("TL: Finished Closing");
+				}
+
+				public void disposing(EventObject e)
+				{
+					System.out.println("TL: Disposing");
+				}
+			});
+
+			XComponent bridgeComp = Lo.getBridge();
+			if (bridgeComp != null)
+			{					
+				bridgeComp.addEventListener(new XEventListener()
+				{
+					public void disposing(EventObject e)
+					{ /*
+						 * remote bridge has gone down, because the office
+						 * crashed or was terminated.
+						 */
+						System.out.println("Office bridge has gone!!");
+						
+					}
+				});
+			}
+			
+			
+			
+			
+			XComponent xDocument = Lo.openDoc(documentPath,xComponentLoader);
+			if (xDocument != null)
+			{
+				
+				GUI.setVisible(xDocument, true);
+				
+			}
+			else
+			{
+				Lo.delay(5000);
+				Lo.closeOffice();
+			}
+		}
+		
+		
+		
+		/*
 		MApplication currentApplication = E4Workbench.getServiceContext().get(IWorkbench.class).getApplication();
 		eventBroker = currentApplication.getContext().get(IEventBroker.class);
 		
@@ -58,7 +127,7 @@ public class TextDocument
 			{
 				try
 				{
-					loadDocument(documentPath);
+					loadDocumentLo(documentPath);
 					//setDocumentProperties();
 				}
 				catch (Exception e)
@@ -70,7 +139,8 @@ public class TextDocument
 				return Status.OK_STATUS;
 			}
 		};
-		j.schedule();		
+		j.schedule();
+		*/		
 	}
 	
 	/*
@@ -80,75 +150,18 @@ public class TextDocument
 	 * 
 	 */
 
-	private void loadDocumentLO(String documentPath) throws Exception
+	private void loadDocumentLo(String documentPath) throws Exception
 	{
-		XComponentLoader loader = Lo.loadSocketOffice();
-
-		XDesktop xDesktop = Lo.getDesktop();
-		xDesktop.addTerminateListener(new XTerminateListener()
+		/*
+		XComponentContext context = Activator.getOfficeContext();
+		if(context != null)
 		{
-			public void queryTermination(EventObject e)throws TerminationVetoException
-			{
-				System.out.println("TL: Starting Closing");
-			}
-
-			public void notifyTermination(EventObject e)
-			{
-				System.out.println("TL: Finished Closing");
-			}
-
-			public void disposing(EventObject e)
-			{
-				System.out.println("TL: Disposing");
-			}
-		});
-		
-		XComponent bridgeComp = Lo.getBridge();
-		if (bridgeComp != null)
-		{
-			System.out.println("Found bridge");
-			bridgeComp.addEventListener(new XEventListener()
-			{
-				public void disposing(EventObject e)
-				{ /*
-					 * remote bridge has gone down, because the office crashed
-					 * or was terminated.
-					 */
-					System.out.println("Office bridge has gone!!");
-					System.exit(1);
-				}
-			});
+			XComponentLoader xComponentLoader = UnoRuntime.queryInterface(XComponentLoader.class, Lo.getDesktop());
+			
+			XComponent xComponent = Lo.openDoc(documentPath, xComponentLoader);
+			
 		}
-
-		
-		// sichtbar machen
-		File sourceFile = new java.io.File(documentPath);
-		StringBuffer sTemplateFileUrl = new StringBuffer("file:///");
-		sTemplateFileUrl.append(sourceFile.getCanonicalPath()
-				.replace('\\', '/'));
-
-		
-		XComponent doc = Lo.openDoc(sTemplateFileUrl.toString(), loader);
-		if (doc == null)
-		{
-			System.out.println("Could not open " + sTemplateFileUrl);
-			Lo.closeOffice();
-			return;
-		}
-		
-		  GUI.setVisible(doc, true);
-		
-		
-		
-	    System.out.println("Waiting for 5 secs before closing doc...");
-	    Lo.delay(5000);
-	    Lo.closeDoc(doc);
-
-	    System.out.println("Waiting for 5 secs before closing Office...");
-	    Lo.delay(5000);
-	    Lo.closeOffice();
-
-
+		*/
 	}
 	
 	
@@ -160,9 +173,8 @@ public class TextDocument
 		StringBuffer sTemplateFileUrl = new StringBuffer("file:///");
 		sTemplateFileUrl.append(sourceFile.getCanonicalPath()
 				.replace('\\', '/'));
-	
-		xContext = socketContext();
-		//xContext = Bootstrap.bootstrap();
+			
+		xContext = Bootstrap.bootstrap();
 		if (xContext != null)
 		{
 			XMultiComponentFactory xMCF = xContext.getServiceManager();
@@ -236,12 +248,4 @@ public class TextDocument
 			//openDocumentsMap.put(terminateListener, documentPath);	
 		}
 	}
-	
-	private XComponentContext socketContext()
-	{
-		Lo.loadSocketOffice();
-		return Lo.getContext(); 
-	}
-	
-
 }

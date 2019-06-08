@@ -1,8 +1,13 @@
 package it.naturtalent.libreoffice;
 
+import org.apache.commons.lang3.SystemUtils;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.jnativehook.GlobalScreen;
 import org.osgi.framework.BundleContext;
+
+import com.sun.star.uno.XComponentContext;
+
+import it.naturtalent.libreoffice.utils.Lo;
 
 /**
  * The activator class controls the plug-in life cycle
@@ -33,6 +38,7 @@ public class Activator extends AbstractUIPlugin
 	{
 		super.start(context);
 		plugin = this;
+		//startLibreoffice();
 	}
 
 	/*
@@ -42,9 +48,8 @@ public class Activator extends AbstractUIPlugin
 	 * BundleContext)
 	 */
 	public void stop(BundleContext context) throws Exception
-	{
-		plugin = null;
-		super.stop(context);
+	{		
+		plugin = null;		
 	}
 
 	/**

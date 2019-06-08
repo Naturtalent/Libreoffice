@@ -1,66 +1,48 @@
 package it.naturtalent.libreoffice.utils;
 
 
-// Lo.java
-// Andrew Davison, ad@fivedots.coe.psu.ac.th, February 2015
-
-/* A growing collection of utility functions to make Office
-   easier to use. They are currently divided into the following
-   groups:
-
-     * interface object creation (uses generics)
-
-     * office starting
-     * office shutdown
-
-     * document opening
-     * document creation
-     * document saving
-     * document closing
-
-     * initialization via Addon-supplied context
-     * initialization via script context
-
-     * dispatch
-     * UNO cmds
-
-     * use Inspectors extension
-
-     * color methods
-     * other utils
-
-     * container manipulation
-*/
-
-
-import java.io.*;
-import java.util.*;
 import java.net.URLClassLoader;
+import java.util.ArrayList;
+import java.util.Arrays;
 
+import org.apache.commons.lang3.SystemUtils;
 
-import com.sun.star.beans.*;
-import com.sun.star.comp.helper.*;
-import com.sun.star.frame.*;
-import com.sun.star.connection.*;
-import com.sun.star.bridge.*;
-import com.sun.star.lang.*;
-import com.sun.star.uno.*;
-import com.sun.star.awt.*;
-import com.sun.star.util.*;
-import com.sun.star.document.*;
-
-import com.sun.star.view.*;
-import com.sun.star.container.*;
-import com.sun.star.linguistic2.*;
- 
-import com.sun.star.uno.Exception;
-import com.sun.star.io.IOException;
-
-import com.sun.star.script.provider.XScriptContext;
-import com.sun.star.reflection.*;
-
-import com.sun.star.comp.beans.*;
+import com.sun.star.beans.PropertyValue;
+import com.sun.star.beans.XIntrospection;
+import com.sun.star.beans.XIntrospectionAccess;
+import com.sun.star.beans.XPropertySet;
+import com.sun.star.bridge.XBridge;
+import com.sun.star.bridge.XBridgeFactory;
+import com.sun.star.comp.beans.OOoBean;
 import com.sun.star.comp.beans.OfficeConnection;
+import com.sun.star.comp.helper.Bootstrap;
+import com.sun.star.comp.helper.BootstrapException;
+import com.sun.star.connection.XConnection;
+import com.sun.star.connection.XConnector;
+import com.sun.star.container.XChild;
+import com.sun.star.container.XIndexAccess;
+import com.sun.star.container.XNamed;
+import com.sun.star.document.MacroExecMode;
+import com.sun.star.frame.DispatchResultEvent;
+import com.sun.star.frame.DispatchResultState;
+import com.sun.star.frame.XComponentLoader;
+import com.sun.star.frame.XDesktop;
+import com.sun.star.frame.XDispatchHelper;
+import com.sun.star.frame.XDispatchProvider;
+import com.sun.star.frame.XFrame;
+import com.sun.star.frame.XStorable;
+import com.sun.star.io.IOException;
+import com.sun.star.lang.XComponent;
+import com.sun.star.lang.XMultiComponentFactory;
+import com.sun.star.lang.XMultiServiceFactory;
+import com.sun.star.reflection.XIdlMethod;
+import com.sun.star.script.provider.XScriptContext;
+import com.sun.star.uno.Exception;
+import com.sun.star.uno.Type;
+import com.sun.star.uno.UnoRuntime;
+import com.sun.star.uno.XComponentContext;
+import com.sun.star.util.CloseVetoException;
+import com.sun.star.util.XCloseable;
 
 
 
@@ -95,7 +77,7 @@ public class Lo
   public static final String MATH_SERVICE = "com.sun.star.formula.FormulaProperties";
 
   // connect to locally running Office via port 8100
-  private static final int SOCKET_PORT = 8100;
+  private static final int SOCKET_PORT = 8100;  
 
 
   // CLSIDs for Office documents
@@ -360,6 +342,46 @@ public class Lo
     return Lo.qi(XComponentLoader.class, xDesktop);
   }  // end of loadOffice()
 
+  
+  // ======================== start office prod ==============
+  
+	public static XComponentLoader getOfficeLoader()
+	{
+		if (SystemUtils.IS_OS_WINDOWS)
+			return Lo.startOffice(false);
+		else
+			return Lo.startOffice(true);
+	}
+  
+  public static XComponentLoader startOffice(boolean usingPipes)
+  /* Creation sequence: remote component content (xcc) --> 
+                        remote service manager (mcFactory) -->
+                        remote desktop (xDesktop) -->
+                        component loader (XComponentLoader)
+    Once we have a component loader, we can load a document. 
+    xcc, mcFactory, and xDesktop are stored as static globals.
+  */
+  { 
+    if (usingPipes)
+    	xcc = bootstrapContext(); // connects to office via pipes
+	else
+      xcc = socketContext();    // connects to office via a socket
+    if (xcc == null)
+    	return null;
+    
+    // get the remote office service manager
+    mcFactory = xcc.getServiceManager();
+    if (mcFactory == null) 
+    	return null;
+
+    // desktop service handles application windows and documents
+    xDesktop = createInstanceMCF(XDesktop.class, "com.sun.star.frame.Desktop");
+    if (xDesktop == null)
+    	return null;
+
+    // XComponentLoader provides ability to load components
+    return Lo.qi(XComponentLoader.class, xDesktop);
+  }  
 
 
   private static XComponentContext bootstrapContext()
@@ -369,7 +391,8 @@ public class Lo
   {
     XComponentContext xcc = null;   // the remote office component context
     try {
-      xcc = Bootstrap.bootstrap();  //  get remote office component context
+      //xcc = it.naturtalent.libreoffice.Bootstrap.bootstrap();  //  get remote office component context
+    	xcc = it.naturtalent.libreoffice.utils.Bootstrap.bootstrap();  //  get remote office component context
         // Connect to office, if office is not running then it's started
     }
     catch (BootstrapException e) {
