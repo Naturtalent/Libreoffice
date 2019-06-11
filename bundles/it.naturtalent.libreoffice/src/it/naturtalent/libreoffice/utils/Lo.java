@@ -343,17 +343,31 @@ public class Lo
   }  // end of loadOffice()
 
   
-  // ======================== start office prod ==============
+  // ======================== start office in application ==============
   
+	/**
+	 * Mit dieser Funktion werden alle Libreofficedocumente geladen. 
+	 * Die bevorzugte Interprozesskommunikation (Pipe/Socket) kann betriegssystemabhaengig
+	 * vordefiniert werden. Momentan wird Socket bevorzugt, da es unter Windows bei 64-Bit Bibliotheken
+	 * zu Problemen kommen kann.
+	 *  
+	 * @return Loader mit dem das Dokument geladen werden kann.
+	 * 
+	 */
 	public static XComponentLoader getOfficeLoader()
 	{
 		if (SystemUtils.IS_OS_WINDOWS)
-			return Lo.startOffice(false);
+		{
+			// in Windows funktioniert die Socket-Varinate
+			return Lo.getDocumentLoader(false);
+		}
 		else
-			return Lo.startOffice(true);
+		{	// in Ubuntu funktioniert Pipe-Variante
+			return Lo.getDocumentLoader(true);
+		}
 	}
   
-  public static XComponentLoader startOffice(boolean usingPipes)
+  public static XComponentLoader getDocumentLoader(boolean usingPipes)
   /* Creation sequence: remote component content (xcc) --> 
                         remote service manager (mcFactory) -->
                         remote desktop (xDesktop) -->
@@ -391,8 +405,8 @@ public class Lo
   {
     XComponentContext xcc = null;   // the remote office component context
     try {
-      //xcc = it.naturtalent.libreoffice.Bootstrap.bootstrap();  //  get remote office component context
-    	xcc = it.naturtalent.libreoffice.utils.Bootstrap.bootstrap();  //  get remote office component context
+      xcc = it.naturtalent.libreoffice.Bootstrap.bootstrap();  //  get remote office component context
+    	//xcc = it.naturtalent.libreoffice.utils.Bootstrap.bootstrap();  //  get remote office component context
         // Connect to office, if office is not running then it's started
     }
     catch (BootstrapException e) {
@@ -488,7 +502,8 @@ public class Lo
     }
 
     if(isOfficeTerminated) {
-      System.out.println("Office has already been requested to terminate");
+    	System.out.println("Office has already been requested to terminate");
+    	tryToTerminate(1);      
       return;
     }
 

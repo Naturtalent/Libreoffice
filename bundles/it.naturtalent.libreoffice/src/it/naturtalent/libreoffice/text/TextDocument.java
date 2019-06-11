@@ -14,12 +14,16 @@ import org.eclipse.e4.ui.workbench.IWorkbench;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Display;
 
+import com.sun.star.awt.XWindow;
 import com.sun.star.beans.PropertyValue;
 import com.sun.star.comp.helper.BootstrapException;
+import com.sun.star.frame.FrameActionEvent;
 import com.sun.star.frame.TerminationVetoException;
 import com.sun.star.frame.XComponentLoader;
 import com.sun.star.frame.XController;
 import com.sun.star.frame.XDesktop;
+import com.sun.star.frame.XFrame;
+import com.sun.star.frame.XFrameActionListener;
 import com.sun.star.frame.XModel;
 import com.sun.star.frame.XTerminateListener;
 import com.sun.star.lang.EventObject;
@@ -35,6 +39,7 @@ import it.naturtalent.libreoffice.Activator;
 import it.naturtalent.libreoffice.Bootstrap;
 import it.naturtalent.libreoffice.draw.TerminateListener;
 import it.naturtalent.libreoffice.utils.GUI;
+import it.naturtalent.libreoffice.utils.JNAUtils;
 import it.naturtalent.libreoffice.utils.Lo;
 import it.naturtalent.libreoffice.utils.examples.DocMonitor;
 
@@ -56,11 +61,24 @@ public class TextDocument
 	
 	public void loadPage(final String documentPath)
 	{
-		XComponentLoader xComponentLoader = Lo.getOfficeLoader();
 		
+		//it.naturtalent.libreoffice.utils.JNAUtils.killOffice();
+		
+		// Libreoffice-Dokumentenlader abrufen
+		/*
+		XComponentLoader xComponentLoader = Lo.getOfficeLoader();		
+		Lo.delay(5000);
+		Lo.closeOffice();
+		if(xComponentLoader != null)
+			return;
+			*/
+		
+		// einen Documentloader anfragen (ggf. Libreoffice starten) 
+		// (XComponentContext, XDesktop, XMultiComponentFactory sind statisch verfuegbar)
+		XComponentLoader xComponentLoader = Lo.getOfficeLoader();		
 		if(xComponentLoader != null)
 		{
-			
+			// Listener ueberwacht 'Libreoffice beenden'
 			XDesktop xDesktop = Lo.getDesktop();
 			xDesktop.addTerminateListener(new XTerminateListener()
 			{
@@ -77,35 +95,31 @@ public class TextDocument
 
 				public void disposing(EventObject e)
 				{
-					System.out.println("TL: Disposing");
+					System.out.println("TL: Disposing");										
 				}
 			});
 
-			XComponent bridgeComp = Lo.getBridge();
-			if (bridgeComp != null)
-			{					
-				bridgeComp.addEventListener(new XEventListener()
-				{
-					public void disposing(EventObject e)
-					{ /*
-						 * remote bridge has gone down, because the office
-						 * crashed or was terminated.
-						 */
-						System.out.println("Office bridge has gone!!");
-						
-					}
-				});
-			}
-			
-			
-			
-			
+			// das Dokument wird geladen
 			XComponent xDocument = Lo.openDoc(documentPath,xComponentLoader);
 			if (xDocument != null)
-			{
-				
+			{		
+				// ContainerWindow (XWindow) wird sichtbar und erhaelt den Focos
 				GUI.setVisible(xDocument, true);
 				
+				// Listener ueberwacht das Schliessen des Dokuments
+				XWindow xWindow = GUI.getFrame(xDocument).getContainerWindow();				
+				if (xWindow != null)
+				{
+					xWindow.addEventListener(new XEventListener()
+					{
+						@Override
+						public void disposing(EventObject arg0)
+						{
+							System.out.println("Fenster geschlossen");
+
+						}
+					});
+				}
 			}
 			else
 			{

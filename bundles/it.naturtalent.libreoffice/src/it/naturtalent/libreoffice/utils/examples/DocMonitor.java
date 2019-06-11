@@ -41,8 +41,8 @@ public class DocMonitor
 
   public DocMonitor(String fnm)
   {
-    XComponentLoader loader =  Lo.loadOffice();   
-                              //Lo.loadSocketOffice();
+    XComponentLoader loader =  //Lo.loadOffice();   
+                              Lo.loadSocketOffice();
 
     XDesktop xDesktop = Lo.getDesktop();
     xDesktop.addTerminateListener( new XTerminateListener()
