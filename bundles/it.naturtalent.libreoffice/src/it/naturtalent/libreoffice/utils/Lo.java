@@ -44,6 +44,8 @@ import com.sun.star.uno.XComponentContext;
 import com.sun.star.util.CloseVetoException;
 import com.sun.star.util.XCloseable;
 
+import it.naturtalent.libreoffice.SocketContext;
+
 
 
 
@@ -120,7 +122,7 @@ public class Lo
   private static XMultiServiceFactory msFactory = null;
 
   private static XComponent bridgeComponent = null;
-      // this is only set if office is opened via a socket
+  // this is only set if office is opened via a socket
 
   private static boolean isOfficeTerminated = false;
 
@@ -363,7 +365,7 @@ public class Lo
 		}
 		else
 		{	// in Ubuntu funktioniert Pipe-Variante
-			return Lo.getDocumentLoader(true);
+			return Lo.getDocumentLoader(false);
 		}
 	}
   
@@ -379,7 +381,7 @@ public class Lo
     if (usingPipes)
     	xcc = bootstrapContext(); // connects to office via pipes
 	else
-      xcc = socketContext();    // connects to office via a socket
+      xcc = SocketContext.socketContext();    // connects to office via a socket
     if (xcc == null)
     	return null;
     
