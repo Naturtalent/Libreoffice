@@ -23,6 +23,7 @@ Export-Package: it.naturtalent.libreoffice,
  it.naturtalent.libreoffice.calc,
  it.naturtalent.libreoffice.draw,
  it.naturtalent.libreoffice.text,
+ it.naturtalent.libreoffice.utils,
  org.jnativehook,
  org.jnativehook.mouse
 Require-Bundle: org.eclipse.ui,

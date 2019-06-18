@@ -378,6 +378,8 @@ public class Lo
     xcc, mcFactory, and xDesktop are stored as static globals.
   */
   { 
+	  
+	  
     if (usingPipes)
     	xcc = bootstrapContext(); // connects to office via pipes
 	else

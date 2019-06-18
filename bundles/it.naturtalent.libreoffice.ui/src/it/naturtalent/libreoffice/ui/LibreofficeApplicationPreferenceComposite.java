@@ -1,9 +1,14 @@
 package it.naturtalent.libreoffice.ui;
 
 import it.naturtalent.e4.preferences.DirectoryEditorComposite;
+import it.naturtalent.libreoffice.utils.Lo;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+
 
 public class LibreofficeApplicationPreferenceComposite extends Composite
 {
@@ -39,6 +44,19 @@ public class LibreofficeApplicationPreferenceComposite extends Composite
 		unoDirectoryComposite.setLabel("Verzeichnis LibreOffice UNO Klassen (juh.jar, jurt.jar...) ");
 		unoDirectoryComposite.setBounds(10, 202, 529, 61);
 		unoDirectoryComposite.setEnable(false);
+		
+		Button btnKillLibreoffice = new Button(this, SWT.NONE);
+		btnKillLibreoffice.addSelectionListener(new SelectionAdapter()
+		{
+			@Override
+			public void widgetSelected(SelectionEvent e)
+			{
+				Lo.killOffice();
+				System.out.println("Kill Libreoffice");
+			}
+		});
+		btnKillLibreoffice.setBounds(20, 290, 108, 25);
+		btnKillLibreoffice.setText("Kill Libreoffice");
 
 	}
 	

@@ -15,20 +15,26 @@ import com.sun.star.comp.helper.Bootstrap;
 import com.sun.star.comp.helper.BootstrapException;
 import com.sun.star.connection.XConnection;
 import com.sun.star.connection.XConnector;
+import com.sun.star.lang.EventObject;
 import com.sun.star.lang.XComponent;
+import com.sun.star.lang.XEventListener;
 import com.sun.star.lang.XMultiComponentFactory;
 import com.sun.star.uno.XComponentContext;
 
 import it.naturtalent.libreoffice.utils.Lo;
 
+/**
+ * 
+ * @author dieter
+ *
+ */
 public class SocketContext
 {
-	// this is only set if office is opened via a socket
-	private static XComponent bridgeComponent = null;
-    
 	// connect to locally running Office via port 8100
 	private static final int SOCKET_PORT = 8100;  
 	
+	// bridge ermoeglicht die prozessuebergreifende Kommunikation mit Libreoffice  
+	// bei einer Socket-Connection
 	private static XBridge bridge = null;
 	
 	/**
@@ -37,9 +43,10 @@ public class SocketContext
 	 */
 	public static XComponentContext socketContext()
 	{
-		XComponentContext xcc = null; // the remote office component context
 		try
 		{
+			if (bridge != null)
+				return getRemoteContext();
 			
 			IEclipsePreferences preferences = InstanceScope.INSTANCE
 					.getNode(OfficeConstants.ROOT_OFFICE_PREFERENCES_NODE);
@@ -48,7 +55,7 @@ public class SocketContext
 			if(StringUtils.isEmpty(officApplicationPath))
 			{
 				preferences = DefaultScope.INSTANCE
-						.getNode(OfficeConstants.ROOT_OFFICE_PREFERENCES_NODE);
+						 .getNode(OfficeConstants.ROOT_OFFICE_PREFERENCES_NODE);
 				officApplicationPath = preferences.get(OfficeConstants.OFFICE_APPLICATION_PREF, null);
 			}
 			
@@ -93,31 +100,53 @@ public class SocketContext
 					localFactory.createInstanceWithContext(
 							"com.sun.star.bridge.BridgeFactory", localContext));
 
-			if (bridge == null)
-			{
-				// create a nameless bridge with no instance provider
-				bridge = bridgeFactory.createBridge("socketBridgeAD", "urp",connection, null);
-				bridgeComponent = Lo.qi(XComponent.class, bridge);
-			}			
-
-			// get the remote service manager
-			XMultiComponentFactory serviceManager = Lo.qi(
-					XMultiComponentFactory.class,
-					bridge.getInstance("StarOffice.ServiceManager"));
-
-			// retrieve Office's remote component context as a property
-			XPropertySet props = Lo.qi(XPropertySet.class, serviceManager);
-			// initObject);
-			Object defaultContext = props.getPropertyValue("DefaultContext");
-
-			// get the remote interface XComponentContext
-			xcc = Lo.qi(XComponentContext.class, defaultContext);
+			bridge = bridgeFactory.createBridge("socketBridgeAD", "urp",connection, null);
+			XComponent bridgeComponent = Lo.qi(XComponent.class, bridge);
+			bridgeComponent.addEventListener(new XEventListener()
+			{				
+				@Override
+				public void disposing(EventObject arg0)
+				{
+					// Socketconnection ist definitiv unterbrochen (Lo crashed or terminated)
+					bridge = null;
+					System.out.println("Bridge disposed");					
+				}
+			});
+			
+			return getRemoteContext();
+			
 		} catch (java.lang.Exception e)
 		{
 			System.out.println("Unable to socket connect to Office");
 		}
 
-		return xcc;
-	} // end of socketContext()
+		return null;
+	} 
+	
+	/*
+	 * Ueber eine bestehende bridge wird der Context zurueckgegeben.
+	 * 
+	 * Es kann nicht ueberprueft werden, die bridge real noch existiert 
+	 */
+	private static XComponentContext getRemoteContext() throws Exception
+	{
+		// get the remote service manager
+		XMultiComponentFactory serviceManager = Lo.qi(
+				XMultiComponentFactory.class,
+				bridge.getInstance("StarOffice.ServiceManager"));
+
+		// retrieve Office's remote component context as a property
+		XPropertySet props = Lo.qi(XPropertySet.class, serviceManager);
+		// initObject);
+		Object defaultContext = props.getPropertyValue("DefaultContext");
+
+		// get the remote interface XComponentContext
+		return Lo.qi(XComponentContext.class, defaultContext);
+	}
+	
+	public static void terminateConnection()
+	{
+		bridge = null;
+	}
 
 }
