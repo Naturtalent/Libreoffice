@@ -235,11 +235,13 @@ public class Bootstrap {
         XComponentContext xContext = null;
         
         try {
-            // create default local component context                
+            // create default local component context       
+        	/*
             XComponentContext xLocalContext =
                 createInitialComponentContext( null );
             if ( xLocalContext == null )
                 throw new BootstrapException( "no local component context!" );
+                */
             
             // find office executable relative to this class's class loader
             String sOffice =
@@ -268,6 +270,13 @@ public class Bootstrap {
             Process p = Runtime.getRuntime().exec( cmdArray );
             pipe( p.getInputStream(), System.out, "CO> " );
             pipe( p.getErrorStream(), System.err, "CE> " );
+            
+            // !!! geaendert
+            XComponentContext xLocalContext =
+                    createInitialComponentContext( null );
+                if ( xLocalContext == null )
+                    throw new BootstrapException( "no local component context!" );
+            
             
             // initial service manager
             XMultiComponentFactory xLocalServiceManager =

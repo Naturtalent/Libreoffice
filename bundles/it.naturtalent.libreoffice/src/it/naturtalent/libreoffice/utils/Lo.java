@@ -365,7 +365,7 @@ public class Lo
 		}
 		else
 		{	// in Ubuntu funktioniert Pipe-Variante
-			return Lo.getDocumentLoader(false);
+			return Lo.getDocumentLoader(true);
 		}
 	}
   
