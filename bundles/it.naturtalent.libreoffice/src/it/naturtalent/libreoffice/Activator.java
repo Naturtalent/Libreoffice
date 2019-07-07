@@ -1,13 +1,7 @@
 package it.naturtalent.libreoffice;
 
-import org.apache.commons.lang3.SystemUtils;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
-import org.jnativehook.GlobalScreen;
 import org.osgi.framework.BundleContext;
-
-import com.sun.star.uno.XComponentContext;
-
-import it.naturtalent.libreoffice.utils.Lo;
 
 /**
  * The activator class controls the plug-in life cycle

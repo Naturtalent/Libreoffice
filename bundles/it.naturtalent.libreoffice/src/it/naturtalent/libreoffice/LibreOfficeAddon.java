@@ -49,7 +49,7 @@ public class LibreOfficeAddon
 		
 		// Adapter zum Oeffnen von odt-Dateien mit Libreoffice
 		//openwithAdapterRepository.getOpenWithAdapters().add(new LibreofficeOpenWithAdapter());
-		openwithAdapterRepository.getOpenWithAdapters().add(new OpenLoDocumentAdapter());
+		//openwithAdapterRepository.getOpenWithAdapters().add(new OpenLoDocumentAdapter());
 		
 		// dyn. Menues definieren
 		List<MCommand>commands = application.getCommands();
