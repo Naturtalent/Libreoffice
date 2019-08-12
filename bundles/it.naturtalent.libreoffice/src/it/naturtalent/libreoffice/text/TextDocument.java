@@ -43,6 +43,11 @@ import it.naturtalent.libreoffice.utils.JNAUtils;
 import it.naturtalent.libreoffice.utils.Lo;
 import it.naturtalent.libreoffice.utils.examples.DocMonitor;
 
+/**
+ * 
+ * @author dieter
+ *
+ */
 public class TextDocument
 {
 	
@@ -74,7 +79,7 @@ public class TextDocument
 			*/
 		
 		// einen Documentloader anfragen (ggf. Libreoffice starten) 
-		// (XComponentContext, XDesktop, XMultiComponentFactory sind statisch verfuegbar)
+		// (XComponentContext, XDesktop, XMultiComponentFactory sind statisch in Lo.Utils verfuegbar)
 		XComponentLoader xComponentLoader = Lo.getOfficeLoader();		
 		if(xComponentLoader != null)
 		{
@@ -128,8 +133,6 @@ public class TextDocument
 			}
 		}
 		
-		
-		
 		/*
 		MApplication currentApplication = E4Workbench.getServiceContext().get(IWorkbench.class).getApplication();
 		eventBroker = currentApplication.getContext().get(IEventBroker.class);
@@ -155,26 +158,5 @@ public class TextDocument
 		};
 		j.schedule();
 		*/		
-	}
-	
-	/*
-	 * 
-	 * 
-	 * 
-	 * 
-	 */
-
-	private void loadDocumentLo(String documentPath) throws Exception
-	{
-		/*
-		XComponentContext context = Activator.getOfficeContext();
-		if(context != null)
-		{
-			XComponentLoader xComponentLoader = UnoRuntime.queryInterface(XComponentLoader.class, Lo.getDesktop());
-			
-			XComponent xComponent = Lo.openDoc(documentPath, xComponentLoader);
-			
-		}
-		*/
-	}
+	}	
 }

@@ -12,6 +12,7 @@ import java.nio.file.Paths;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.SystemUtils;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.Path;
@@ -25,6 +26,12 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 
 
+/**
+ * Composite der Libreoffice Preferaenzen
+ * 
+ * @author dieter
+ *
+ */
 public class LibreofficeApplicationPreferenceComposite extends Composite
 {
 
@@ -54,20 +61,23 @@ public class LibreofficeApplicationPreferenceComposite extends Composite
 		directoryEditorComposite = new DirectoryEditorComposite(this, SWT.NONE);
 		directoryEditorComposite.setBounds(5, 5, 529, 61);
 				
-		// Verzeichnis indem sich die 'JPipe' - Bibliothek befindet
-		jpipeDirectoryComposite = new DirectoryEditorComposite(this, SWT.NONE);
-		jpipeDirectoryComposite.setBounds(5, 99, 529, 61);
-		jpipeDirectoryComposite.setLabel("Verzeichnis der JPIPE-Biblipthek");
-		jpipeDirectoryComposite.setEnable(false);
+		Button btnTest = new Button(this, SWT.NONE);
+		btnTest.addSelectionListener(new SelectionAdapter()
+		{
+			@Override
+			public void widgetSelected(SelectionEvent e)
+			{				
+				start(directoryEditorComposite.getDirectory());
+			}
+		});
+		btnTest.setBounds(15, 72, 132, 30);
+		btnTest.setText("Test Libreoffice");
 		
-		// Verzeichnis indem sich die UNO - Klassen befinden
-		unoDirectoryComposite = new DirectoryEditorComposite(this, SWT.NONE);
-		unoDirectoryComposite.setLabel("Verzeichnis LibreOffice UNO Klassen (juh.jar, jurt.jar...) ");
-		unoDirectoryComposite.setBounds(10, 202, 529, 61);
-		unoDirectoryComposite.setEnable(false);
-		
-		Button btnKillLibreoffice = new Button(this, SWT.NONE);
-		btnKillLibreoffice.addSelectionListener(new SelectionAdapter()
+		// Button zum Abschiessen von Libreoffice
+		Button btnKill = new Button(this, SWT.NONE);
+		btnKill.setBounds(15, 126, 132, 30);
+		btnKill.setText("Kill Libreoffice");
+		btnKill.addSelectionListener(new SelectionAdapter()
 		{
 			@Override
 			public void widgetSelected(SelectionEvent e)
@@ -107,13 +117,101 @@ public class LibreofficeApplicationPreferenceComposite extends Composite
 				}
 			}
 		});
-		
-		btnKillLibreoffice.setBounds(20, 290, 108, 25);
-		btnKillLibreoffice.setText("Kill Libreoffice");
 
+		
+		
 	}
 	
+	private void start(String libreofficePath)
+	{
+		if (StringUtils.isNotEmpty(libreofficePath))
+		{
+			File libOfficeDir = new File(libreofficePath);
+			if (libOfficeDir.isDirectory())
+			{
+				/*
+				//if (SystemUtils.IS_OS_LINUX)
+				if (SystemUtils.IS_OS_WINDOWS)
+				{
+					try
+					{
+						// evtl. laufende LibreofficeInstanzen abschiessen
+						kill();
+
+						// via Runtime.exec 'libreoffice' Lo als Snap starten 
+						//Runtime.getRuntime().exec(new String[]{ "libreoffice", "-invisible" });
+						Runtime.getRuntime().exec(new String[]{ "libreoffice"});
+					} catch (IOException e)
+					{
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+
+					return;
+				}
+				*/
+
+				//if (SystemUtils.IS_OS_WINDOWS)
+				//if (SystemUtils.IS_OS_LINUX)
+				//{
+					try
+					{
+						// via Runtime.exec 'libreoffice' Lo als Snap starten 
+						File sofficeFile = new File(libOfficeDir,"soffice");
+												
+						Runtime.getRuntime().exec(new String[]{ "libreoffice", "-invisible" });
+						//Runtime.getRuntime().exec(new String[]{sofficeFile.getPath()});
+
+					} catch (IOException e)
+					{
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+
+					return;
+				//}
+
+			}
+
+		}
+	}
 	
+	private void kill()
+	{
+		String userDir = Paths.get(".").toAbsolutePath().normalize().toString();
+		File scriptDir = new File(userDir);
+						
+		if (SystemUtils.IS_OS_LINUX)
+		{					
+			try
+			{	
+				// Kill-Skript in das aktuelle Verzeichnis "/home/..." kopieren
+				copyScriptFile(scriptDir, LINUX_KILLSCRIPT_PATH);
+				
+				Runtime.getRuntime().exec("sh "+ LINUX_KILLSCRIPT_NAME);
+				return;
+				
+			} catch (Exception e1)
+			{
+				System.out.println("Unable to kill Office: " + e1);
+			}
+		}
+		
+		if (SystemUtils.IS_OS_WINDOWS)
+		{
+			try
+			{	
+				// Kill-Skript in das aktuelle Verzeichnis "/home/..." kopieren
+				copyScriptFile(scriptDir, WINDOWS_KILLSCRIPT_PATH);
+				Runtime.getRuntime().exec("cmd /c "+WINDOWS_KILLSCRIPT_NAME);
+				return;
+				
+			} catch (Exception e1)
+			{
+				System.out.println("Unable to kill Office: " + e1);
+			}					
+		}
+	}
 
 	public DirectoryEditorComposite getDirectoryEditorComposite()
 	{
@@ -132,7 +230,7 @@ public class LibreofficeApplicationPreferenceComposite extends Composite
 
 	
 	/**
-	 * Kopiert das Template des OS-spezifischen Skripts in das aktuelle Verzeichnis.
+	 * Kopiert das Template des OS-spezifischen Kill-Skripts in das aktuelle Verzeichnis.
 	 * 
 	 * @param currentDir
 	 * @param templateScriptPath

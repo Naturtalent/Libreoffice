@@ -83,37 +83,18 @@ public class LibreofficeApplicationPreferenceAdapter extends AbstractPreferenceA
 	@Override
 	public void appliedPressed()
 	{
-		// LibreOffice-Installationspfad als Praeferenz speichern
+		// LibreOffice-Installationspfad aus dem Composite als Praeferenz speichern
 		String value = directoryEditorComposite.getDirectory();
 		if(StringUtils.isNotEmpty(value))
 			instancePreferenceNode.put(OfficeConstants.OFFICE_APPLICATION_PREF, value);
-		
-		try
-		{
-			// JPIPE-Lib suchen und Ergebnis im PreferenceDialog anzeigen und als Preference speichern
-			String jpipeDir = findJPIPELibDirectory(value);						
-			jpipeDir = StringUtils.isNotEmpty(jpipeDir) ? jpipeDir : "keine JPIPE gefunden"; 
-			comp.getJpipeDirectoryComposite().setDirectory(jpipeDir);
-			
-			// ist das Verzeichnis gueltig, wird es als Preference gespeichert
-			if(!StringUtils.equals(jpipeDir, "keine JPIPE gefunden"))
-					instancePreferenceNode.put(OfficeConstants.OFFICE_JPIPE_PREF, jpipeDir);
-			else
-				instancePreferenceNode.put(OfficeConstants.OFFICE_JPIPE_PREF, "");
-			
-			// den Preferenceknoten (alle Preferenzen dieses Konotens) speichern
-			instancePreferenceNode.flush();
-			
-		} catch (BackingStoreException e)
-		{
-			log.error(e);			
-		}
 	}
 
 	@Override
 	public void okPressed()
 	{
 		appliedPressed();
+		
+		/*
 		
 		// wurde eine JPIPE-Lib gefunden, -vmargs -Djava.library.path im Launch-Configurationfile aktualisieren
 		String libPath = comp.getJpipeDirectoryComposite().getDirectory();
@@ -152,7 +133,10 @@ public class LibreofficeApplicationPreferenceAdapter extends AbstractPreferenceA
 					}
 				}
 			}
-		}		
+		}	
+		*/
+		
+		
 	}
 	
 	/*
@@ -204,6 +188,7 @@ public class LibreofficeApplicationPreferenceAdapter extends AbstractPreferenceA
 		if(StringUtils.isNotEmpty(value))		
 			directoryEditorComposite.setDirectory(value);
 
+		/*
 		// Verzeichnis indem eine JPIPE - Library gespeichert ist
 		value = getInstancePreference().get(OfficeConstants.OFFICE_JPIPE_PREF, null);
 		if(StringUtils.isEmpty(value))
@@ -218,6 +203,7 @@ public class LibreofficeApplicationPreferenceAdapter extends AbstractPreferenceA
 		if(StringUtils.isNotEmpty(value))		
 			comp.getUnoDirectoryComposite().setDirectory(value);
 
+*/
 		
 		return comp;
 	}
