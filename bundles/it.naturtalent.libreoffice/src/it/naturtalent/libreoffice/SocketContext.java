@@ -72,10 +72,14 @@ public class SocketContext
 			if(!fOffice.exists())
 				throw new BootstrapException("no office executable found!");
 			
-			String[] cmdArray = new String[3];
-			cmdArray[0] = fOffice.getPath();			
-			cmdArray[1] = "-headless";
-			cmdArray[2] = "-accept=socket,host=localhost,port=" + SOCKET_PORT + ";urp;";
+			String[] cmdArray = new String[7];
+			cmdArray[0] = fOffice.getPath();	
+			cmdArray[1] = "--nologo";
+			cmdArray[2] = "--nodefault";
+			cmdArray[3] = "--norestore";
+			cmdArray[4] = "--nocrashreport";
+			cmdArray[5] = "--nolockcheck";
+			cmdArray[6] = "-accept=socket,host=localhost,port=" + SOCKET_PORT + ";urp;";
 			Process p = Runtime.getRuntime().exec(cmdArray);
 			if (p != null)
 				System.out.println("Office process created");
