@@ -60,18 +60,20 @@ public class LibreofficeApplicationPreferenceComposite extends Composite
 		// Verzeichnis indem LibreOffice 'soffice' installiert ist
 		directoryEditorComposite = new DirectoryEditorComposite(this, SWT.NONE);
 		directoryEditorComposite.setBounds(5, 5, 529, 61);
-				
+		
 		Button btnTest = new Button(this, SWT.NONE);
 		btnTest.addSelectionListener(new SelectionAdapter()
 		{
 			@Override
 			public void widgetSelected(SelectionEvent e)
-			{				
+			{		
+				kill();
 				start(directoryEditorComposite.getDirectory());
 			}
 		});
 		btnTest.setBounds(15, 72, 132, 30);
-		btnTest.setText("Test Libreoffice");
+		btnTest.setText("Start Libreoffice");
+		
 		
 		// Button zum Abschiessen von Libreoffice
 		Button btnKill = new Button(this, SWT.NONE);
@@ -129,50 +131,20 @@ public class LibreofficeApplicationPreferenceComposite extends Composite
 			File libOfficeDir = new File(libreofficePath);
 			if (libOfficeDir.isDirectory())
 			{
-				/*
-				//if (SystemUtils.IS_OS_LINUX)
-				if (SystemUtils.IS_OS_WINDOWS)
+				try
 				{
-					try
-					{
-						// evtl. laufende LibreofficeInstanzen abschiessen
-						kill();
-
-						// via Runtime.exec 'libreoffice' Lo als Snap starten 
-						//Runtime.getRuntime().exec(new String[]{ "libreoffice", "-invisible" });
-						Runtime.getRuntime().exec(new String[]{ "libreoffice"});
-					} catch (IOException e)
-					{
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-
-					return;
+					// via Runtime.exec 'libreoffice' starten
+					File sofficeFile = new File(libOfficeDir, "soffice");
+					Runtime.getRuntime().exec(new String[]{ sofficeFile.getPath() });
+					
+				} catch (IOException e)
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
-				*/
 
-				//if (SystemUtils.IS_OS_WINDOWS)
-				//if (SystemUtils.IS_OS_LINUX)
-				//{
-					try
-					{
-						// via Runtime.exec 'libreoffice' Lo als Snap starten 
-						File sofficeFile = new File(libOfficeDir,"soffice");
-												
-						Runtime.getRuntime().exec(new String[]{ "libreoffice", "-invisible" });
-						//Runtime.getRuntime().exec(new String[]{sofficeFile.getPath()});
-
-					} catch (IOException e)
-					{
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-
-					return;
-				//}
-
+				return;
 			}
-
 		}
 	}
 	

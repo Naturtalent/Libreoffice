@@ -47,8 +47,8 @@ public class LibreOfficeAddon
 		String label;
 		DynamicNewMenu newMenu = new DynamicNewMenu();
 		
-		// Adapter zum Oeffnen von odt-Dateien mit Libreoffice
-		//openwithAdapterRepository.getOpenWithAdapters().add(new LibreofficeOpenWithAdapter());
+		// Adapter zum Oeffnen von Dateien mit Libreoffice
+		openwithAdapterRepository.getOpenWithAdapters().add(new LibreofficeOpenWithAdapter());
 		//openwithAdapterRepository.getOpenWithAdapters().add(new OpenLoDocumentAdapter());
 		
 		// dyn. Menues definieren

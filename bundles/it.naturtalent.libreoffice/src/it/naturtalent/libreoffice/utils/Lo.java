@@ -427,20 +427,11 @@ public class Lo
   {
     XComponentContext xcc = null;   // the remote office component context
     try {
-      String[] cmdArray = new String[2];
-      
-      
-      cmdArray[0] = "soffice";             
-      cmdArray[1] = "-accept=socket,host=localhost,port=" +SOCKET_PORT + ";urp;";
-
-      /*
-      cmdArray[0] = "soffice";     
-      // requires soffice to be in Windows PATH env var.
+      String[] cmdArray = new String[3];
+      cmdArray[0] = "soffice";     // requires soffice to be in Windows PATH env var.
       cmdArray[1] = "-headless";
       cmdArray[2] = "-accept=socket,host=localhost,port=" +SOCKET_PORT + ";urp;";
-      */
 
-      
       Process p = Runtime.getRuntime().exec(cmdArray);
       if (p != null)
         System.out.println("Office process created");

@@ -86,7 +86,17 @@ public class LibreofficeApplicationPreferenceAdapter extends AbstractPreferenceA
 		// LibreOffice-Installationspfad aus dem Composite als Praeferenz speichern
 		String value = directoryEditorComposite.getDirectory();
 		if(StringUtils.isNotEmpty(value))
+		{
 			instancePreferenceNode.put(OfficeConstants.OFFICE_APPLICATION_PREF, value);
+			try
+			{
+				instancePreferenceNode.flush();
+			} catch (BackingStoreException e)
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 
 	@Override

@@ -34,11 +34,12 @@ public class SocketContext
 	private static final int SOCKET_PORT = 8100;  
 	
 	// bridge ermoeglicht die prozessuebergreifende Kommunikation mit Libreoffice  
-	// bei einer Socket-Connection
+	// durch einer Socket-Connection
 	private static XBridge bridge = null;
 	
 	/**
-	 * Libreoffice ueber eine 
+	 * XComponentContext ueber eine bridge zurueckgeben.
+	 *  
 	 * @return
 	 */
 	public static XComponentContext socketContext()
@@ -130,7 +131,7 @@ public class SocketContext
 	/*
 	 * Ueber eine bestehende bridge wird der Context zurueckgegeben.
 	 * 
-	 * Es kann nicht ueberprueft werden, die bridge real noch existiert 
+	 * Es kann nicht ueberprueft werden, ob die bridge real noch existiert 
 	 */
 	private static XComponentContext getRemoteContext() throws Exception
 	{
