@@ -584,8 +584,7 @@ public class Lo
 
 
 
-  public static XComponent openDoc(String fnm, XComponentLoader loader, 
-                                                           PropertyValue[] props)
+  public static XComponent openDoc(String fnm, XComponentLoader loader, PropertyValue[] props)
   // open the specified document
   // the possibly props for a document are listed in the MediaDescriptor service
   {

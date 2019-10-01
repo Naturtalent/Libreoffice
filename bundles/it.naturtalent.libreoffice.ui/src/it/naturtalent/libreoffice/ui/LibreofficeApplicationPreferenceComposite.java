@@ -67,7 +67,6 @@ public class LibreofficeApplicationPreferenceComposite extends Composite
 			@Override
 			public void widgetSelected(SelectionEvent e)
 			{		
-				kill();
 				start(directoryEditorComposite.getDirectory());
 			}
 		});
