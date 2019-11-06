@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<?pde version="3.8"?>
+<target includeMode="feature" name="TargetRuntimeDefinition" sequenceNumber="223">
+	<locations>
+		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
+			<repository location="http://download.eclipse.org/eclipse/updates/4.11"/>
+			<unit id="org.eclipse.equinox.p2.sdk.feature.group" version="3.11.300.v20190220-1158"/>
+			<unit id="org.eclipse.equinox.sdk.feature.group" version="3.17.0.v20190305-2225"/>
+			<unit id="org.eclipse.rcp.feature.group" version="4.11.0.v20190307-0500"/>
+			<unit id="org.eclipse.rcp.sdk.id" version="4.11.0.I20190307-0500"/>
+			<unit id="org.eclipse.rcp.source.feature.group" version="4.11.0.v20190307-0500"/>
+			<unit id="org.eclipse.rcp.configuration.feature.group" version="1.1.400.v20190307-0500"/>
+			<unit id="org.eclipse.sdk.feature.group" version="4.11.0.v20190307-0943"/>
+			<unit id="org.eclipse.emf.common.feature.group" version="2.15.0.v20181220-0846"/>
+			<unit id="org.eclipse.emf.common.source.feature.group" version="2.15.0.v20181220-0846"/>
+			<unit id="org.eclipse.emf.ecore.feature.group" version="2.17.0.v20190116-0940"/>
+			<unit id="org.eclipse.emf.ecore.source.feature.group" version="2.17.0.v20190116-0940"/>
+		</location>
+		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
+			<repository location="http://download.eclipse.org/nebula/releases/latest"/>
+			<unit id="org.eclipse.nebula.cwt.feature.feature.group" version="0.0.0"/>
+			<unit id="org.eclipse.nebula.widgets.cdatetime.feature.feature.group" version="0.0.0"/>
+		</location>
+		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
+			<unit id="org.eclipse.emf.base.feature.group" version="2.17.0.v20190116-0940"/>
+			<unit id="org.eclipse.emf.ecore.feature.group" version="2.17.0.v20190116-0940"/>
+			<unit id="org.eclipse.emf.edit.feature.group" version="2.14.0.v20180823-0456"/>
+			<unit id="org.eclipse.emf.edit.ui.feature.group" version="2.16.0.v20181104-0733"/>
+			<unit id="org.eclipse.emf.sdk.feature.group" version="2.17.0.v20190301-1325"/>
+			<repository location="http://download.eclipse.org/modeling/emf/emf/builds/release"/>
+		</location>
+		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
+			<unit id="org.eclipse.net4j.util.doc.feature.group" version="4.2.500.v20180530-1201"/>
+			<unit id="org.eclipse.net4j.util.feature.group" version="4.7.0.v20180530-0909"/>
+			<unit id="org.eclipse.net4j.util.ui.feature.group" version="4.7.0.v20180530-0909"/>
+			<repository location="https://download.eclipse.org/modeling/emf/cdo/updates/releases/4.7/"/>
+		</location>
+		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
+			<unit id="org.eclipse.emf.emfstore.client.feature.feature.group" version="1.9.0.v20170530-0703"/>
+			<unit id="org.eclipse.emf.emfstore.client.ui.feature.feature.group" version="1.9.0.v20170530-0703"/>
+			<unit id="org.eclipse.emf.emfstore.common.feature.feature.group" version="1.9.0.v20170530-0703"/>
+			<unit id="org.eclipse.emf.emfstore.example.feature.feature.group" version="1.9.0.v20170530-0703"/>
+			<unit id="org.eclipse.emf.emfstore.server.feature.feature.group" version="1.9.0.v20170530-0703"/>
+			<repository location="http://download.eclipse.org/emfstore/releases_19"/>
+		</location>
+		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
+			<unit id="org.eclipse.emf.ecp.e4.feature.source.feature.group" version="1.20.0.20190311-1236"/>
+			<repository location="http://download.eclipse.org/ecp/releases/releases_target_120/"/>
+			<unit id="org.eclipse.emf.ecp.emfstore.feature.source.feature.group" version="1.20.0.20190311-1236"/>
+			<unit id="org.eclipse.emf.ecp.view.categorization.feature.source.feature.group" version="1.20.0.20190311-1236"/>
+			<unit id="org.eclipse.emf.ecp.view.compoundcontrol.feature.source.feature.group" version="1.20.0.20190311-1236"/>
+			<unit id="org.eclipse.emf.ecp.view.custom.feature.source.feature.group" version="1.20.0.20190311-1236"/>
+			<unit id="org.eclipse.emf.ecp.view.group.feature.source.feature.group" version="1.20.0.20190311-1236"/>
+			<unit id="org.eclipse.emf.ecp.view.horizontal.feature.source.feature.group" version="1.20.0.20190311-1236"/>
+			<unit id="org.eclipse.emf.ecp.view.label.feature.source.feature.group" version="1.20.0.20190311-1236"/>
+			<unit id="org.eclipse.emf.ecp.view.rule.feature.source.feature.group" version="1.20.0.20190311-1236"/>
+			<unit id="org.eclipse.emf.ecp.view.stack.feature.source.feature.group" version="1.20.0.20190311-1236"/>
+			<unit id="org.eclipse.emf.ecp.view.table.feature.source.feature.group" version="1.20.0.20190311-1236"/>
+			<unit id="org.eclipse.emf.ecp.view.treemasterdetail.feature.source.feature.group" version="1.20.0.20190311-1236"/>
+			<unit id="org.eclipse.emf.ecp.view.vertical.feature.source.feature.group" version="1.20.0.20190311-1236"/>
+			<unit id="org.eclipse.emf.ecp.view.viewproxy.feature.source.feature.group" version="1.20.0.20190311-1236"/>
+			<unit id="org.eclipse.emf.ecp.viewmodel.feature.source.feature.group" version="1.20.0.20190311-1236"/>
+			<unit id="org.eclipse.emfforms.rulerepository.feature.source.feature.group" version="1.20.0.20190311-1236"/>
+			<unit id="org.eclipse.emfforms.swt.controlgrid.feature.source.feature.group" version="1.20.0.20190311-1236"/>
+			<unit id="org.eclipse.emfforms.view.annotation.feature.source.feature.group" version="1.20.0.20190311-1236"/>
+			<unit id="org.eclipse.emf.ecp.cdo.feature.source.feature.group" version="1.20.0.20190311-1236"/>
+			<unit id="org.eclipse.emf.ecp.workspace.feature.source.feature.group" version="1.20.0.20190311-1236"/>
+			<unit id="org.eclipse.emf.ecp.view.template.feature.source.feature.group" version="1.20.0.20190311-1236"/>
+			<unit id="org.eclipse.emfforms.core.bazaar.feature.source.feature.group" version="1.20.0.20190311-1236"/>
+			<unit id="org.eclipse.emf.ecp.view.validation.feature.source.feature.group" version="1.20.0.20190311-1236"/>
+		</location>
+		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
+			<unit id="org.eclipse.egit.feature.group" version="0.8.4"/>
+			<unit id="org.eclipse.jgit.feature.group" version="0.8.4"/>
+			<repository location="https://archive.eclipse.org/egit/updates-0.8/"/>
+		</location>
+		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
+			<repository location="file:/media/dieter/MAXONE/UpdateSites/Basis/repository/"/>
+			<unit id="it.naturtalent.feature.basis.feature.group" version="1.0.0.201910272224"/>
+		</location>
+	</locations>
+</target>

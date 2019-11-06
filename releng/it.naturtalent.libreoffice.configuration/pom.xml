@@ -14,6 +14,7 @@
 		<url.updateSite>file:/media/dieter/MAXONE/UpdateSites</url.updateSite>
 	</properties>
 	
+	<!-- 
  	<repositories>
  		 <repository>
    			<id>eclipse-release</id>
@@ -28,6 +29,7 @@
  		 </repository>
  		 
  	</repositories>
+ 	 -->
  
 	
 	<build>
@@ -71,6 +73,15 @@
 				<artifactId>target-platform-configuration</artifactId>
 				<version>${tycho.version}</version>
 				<configuration>
+				
+					<target>
+						<artifact>
+							<groupId>it.naturtalent.libreoffice</groupId>
+							<artifactId>it.naturtalent.libreoffice.target</artifactId>
+							<version>1.0.0-SNAPSHOT</version>
+						</artifact>
+					</target>
+				
 					<environments>
 						<environment>
 							<os>linux</os>
