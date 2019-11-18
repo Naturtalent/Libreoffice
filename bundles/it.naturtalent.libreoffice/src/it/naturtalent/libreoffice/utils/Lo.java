@@ -435,7 +435,7 @@ public class Lo
       Process p = Runtime.getRuntime().exec(cmdArray);
       if (p != null)
         System.out.println("Office process created");
-      delay(5000);
+      delay(7000);
              // Wait 5 seconds, until office is in listening mode
 
       // Create a local Component Context

@@ -2,6 +2,8 @@ package it.naturtalent.libreoffice;
 
 import java.lang.reflect.InvocationTargetException;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -32,11 +34,21 @@ import it.naturtalent.libreoffice.utils.Lo;
 public class OpenLoDocument
 {
 
+	private static Log log = LogFactory.getLog(OpenLoDocument.class);
+	
 	private static XComponentLoader officeDocumentLoader = null;
 	
+	// kill Watchdog
+	private static boolean cancelWatchDog = false;
+	
+	
+	/**
+	 * Dokument in einem Job oeffnen
+	 * 
+	 * @param documentPath
+	 */
 	public static void loadLoDocument(final String documentPath)
-	{		
-		//runWatchdog();
+	{				
 		final Job j = new Job("Load Job") //$NON-NLS-1$
 		{
 			@Override
@@ -57,6 +69,7 @@ public class OpenLoDocument
 		};
 
 		j.schedule();
+		runWatchdog();
 	}	
 
 	/**
@@ -68,6 +81,7 @@ public class OpenLoDocument
 		if (officeDocumentLoader == null)
 		{
 			// XComponentLoader ermitteln (ggf. LO starten)
+			log.info("Libreoffice wurde gestartet");
 			officeDocumentLoader = Lo.getOfficeLoader();
 		}
 
@@ -87,7 +101,7 @@ public class OpenLoDocument
 				{
 					// Lo beendet - Loader ist nicht mehr gueltig
 					officeDocumentLoader = null;
-					//System.out.println("XDesktop terminated");
+					log.info("Libreoffice wurde gestopped");
 				}
 
 				public void disposing(EventObject e)
@@ -100,44 +114,39 @@ public class OpenLoDocument
 			XComponent xDocument = Lo.openDoc(documentPath,officeDocumentLoader);
 			if (xDocument != null)
 			{
-				if (xDocument != null)
-				{
-					// ContainerWindow (XWindow) wird sichtbar und erhaelt den
-					// Focos
-					GUI.setVisible(xDocument, true);
+				log.info("Dokument: "+documentPath+" geöffnet");
+				cancelWatchDog = true;
+				
+				// ContainerWindow (XWindow) wird sichtbar und erhaelt den
+				// Focos
+				GUI.setVisible(xDocument, true);
 
-					// Listener ueberwacht das Schliessen des Dokuments
-					XWindow xWindow = GUI.getFrame(xDocument).getContainerWindow();
-					if (xWindow != null)
+				// Listener ueberwacht das Schliessen des Dokuments
+				XWindow xWindow = GUI.getFrame(xDocument).getContainerWindow();
+				if (xWindow != null)
+				{
+					xWindow.addEventListener(new XEventListener()
 					{
-						xWindow.addEventListener(new XEventListener()
+						@Override
+						public void disposing(EventObject arg0)
 						{
-							@Override
-							public void disposing(EventObject arg0)
-							{
-								Object obj = arg0.Source;
-								
-								XPropertySet props = Lo.qi(XPropertySet.class, obj);
-								  
-								
-								System.out.println("Containerwindow disposed");
-							}
-						});
-					}
+							log.info("Dokumentfenster geschlossen");
+						}
+					});
 				}
 			}
 		}
+		else log.info("kein officeDocumentLoader ermittelt");
 	}
 	
-	// kill Watchdog
-	private static boolean cancel = false;
+
 	
 	/*
 	 * 
 	 */
 	private static void runWatchdog()
 	{
-		ProgressMonitorDialog dialog = new ProgressMonitorDialog(Display.getDefault().getActiveShell());
+		ProgressMonitorDialog dialog = new ProgressMonitorDialog(Display.getDefault().getActiveShell());				
 		dialog.open();
 		try
 		{
@@ -148,7 +157,7 @@ public class OpenLoDocument
 						throws InvocationTargetException,
 						InterruptedException
 				{
-					monitor.beginTask("Zeichnung wird geöffnet",IProgressMonitor.UNKNOWN);
+					monitor.beginTask("Libreoffice-Dokument wird geöffnet",IProgressMonitor.UNKNOWN);
 					for (int i = 0;; ++i)
 					{
 						if (monitor.isCanceled())
@@ -158,7 +167,7 @@ public class OpenLoDocument
 						
 						if (i == 50)
 							break;
-						if (cancel)
+						if (cancelWatchDog)
 							break;
 						try
 						{
