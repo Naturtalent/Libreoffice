@@ -25,7 +25,7 @@ public class FileTransferable implements XTransferable
   private String mimeType = "application/octet-stream";   // good default
   private byte[] fileData = null;
 
-
+/*
   public FileTransferable(String fnm)
   {  
     mimeType = Info.getMIMEType(fnm);
@@ -37,7 +37,7 @@ public class FileTransferable implements XTransferable
     catch(java.lang.Exception e)
     {  System.out.println("Could not read bytes from " + fnm);  }
   }  // end of FileTransferable()
-
+*/
 
 
   public Object getTransferData(DataFlavor df) throws UnsupportedFlavorException

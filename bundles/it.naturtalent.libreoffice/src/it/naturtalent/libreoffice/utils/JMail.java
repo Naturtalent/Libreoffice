@@ -28,7 +28,7 @@ import java.net.*;
 import javax.mail.*;
 import javax.mail.event.*;
 import javax.mail.internet.*;
-import javax.activation.*;
+//import javax.activation.*;
 
 import com.sun.mail.smtp.*;
 
@@ -72,20 +72,24 @@ public class JMail
         MimeBodyPart p1 = new MimeBodyPart();
         p1.setText(body);
 
-        String mimeType = Info.getMIMEType(attachFnm);
+      //  String mimeType = Info.getMIMEType(attachFnm);
         // System.out.println(mimeType);
 
+        /*
         MimeBodyPart p2 = new MimeBodyPart();
         FileDataSource fds = new FileDataSource(attachFnm);
         p2.setDataHandler(new DataHandler(fds));  // add data,
         p2.setFileName(fds.getName());            // filename,
         p2.setHeader("Content-Type", mimeType);   // file's MIME type
+        
 
         // create multipart
         Multipart mp = new MimeMultipart();
         mp.addBodyPart(p1);   // for body text 
         mp.addBodyPart(p2);   // for the attached file 
         msg.setContent(mp);
+        
+        */
       }
 
       System.out.println("Sending e-mail using javax.mail...");

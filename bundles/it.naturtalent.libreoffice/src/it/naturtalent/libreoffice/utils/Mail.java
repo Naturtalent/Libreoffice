@@ -119,9 +119,11 @@ public class Mail
                  Lo.getContext(), to, from,
                  subject, new TextTransferable(body));
 
+      /*
       if (fnm != null)
         msg.addAttachment( new MailAttachment(
                                 new FileTransferable(fnm), fnm));
+                                */
 
       // send message
       XSmtpService smtpService = Lo.qi(XSmtpService.class, service);

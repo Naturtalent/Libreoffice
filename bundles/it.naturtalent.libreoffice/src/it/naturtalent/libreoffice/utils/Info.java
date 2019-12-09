@@ -26,7 +26,7 @@ import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 import javax.xml.xpath.*;
 
-import javax.activation.MimetypesFileTypeMap;
+//import javax.activation.MimetypesFileTypeMap;
 
 
 import com.sun.star.beans.*;
@@ -684,7 +684,7 @@ In Office:
 
 
 
-
+/*
   public static String getMIMEType(String fnm)
   // also see FileIO.getMimeType() for use of zipped mimetype;
   // also see Office API-based Images.getMimeType() for images only
@@ -703,7 +703,7 @@ In Office:
        return "application/octet-stream";   // better than nothing
     }
   }  // end of getMIMEType()
-
+*/
 
 
   public static int mimeDocType(String mimeType)

@@ -38,8 +38,8 @@
 			<unit id="org.eclipse.nebula.widgets.cdatetime.feature.feature.group" version="1.4.0.201907151344"/>
 		</location>
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="true" type="InstallableUnit">
-			<repository location="file:/run/user/1000/gvfs/smb-share:server=fritz-nas,share=fritz.nas/Stickrepos/public/UpdateSites/NaturtalentBasis/repository/"/>
-			<unit id="it.naturtalent.feature.basis.feature.group" version="1.0.0.201912012137"/>
+			<repository location="file:/home/dieter/Repositories/2019-09/NaturtalentBasis/releng/it.naturtalent.basis.update/target/repository/"/>
+			<unit id="it.naturtalent.feature.basis.feature.group" version="0.0.0"/>
 		</location>
 	</locations>
 </target>

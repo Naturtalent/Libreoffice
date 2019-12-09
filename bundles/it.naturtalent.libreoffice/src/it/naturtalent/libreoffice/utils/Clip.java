@@ -161,7 +161,7 @@ public class Clip
   // included for backward compatibility with old code
   {  return getImage();  }
 
-
+/*
   public static boolean setFile(String fnm)
   {  return addContents(new FileTransferable(fnm));  }
 
@@ -172,7 +172,7 @@ public class Clip
     System.out.println("MIME Type: " + mimeStr);
     return (byte[]) getData(mimeStr);
   }
-
+*/
 
 
 
