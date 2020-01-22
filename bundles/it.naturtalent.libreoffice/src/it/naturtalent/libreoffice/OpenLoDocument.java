@@ -26,7 +26,7 @@ import it.naturtalent.libreoffice.utils.GUI;
 import it.naturtalent.libreoffice.utils.Lo;
 
 /**
- * 
+ * Generelle Funkktion zum Oeffnen von Libreofficedokumenten
  * 
  * @author Dieter Apel
  *
